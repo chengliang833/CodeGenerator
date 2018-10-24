@@ -5,7 +5,7 @@
 主要是为了解决日常工作、练习中代码的重复工作量<br/>
 目前仅支持 Mybatis 底层代码的生成
 
-注：本项目fork自https://github.com/zhaohaihao/CodeGenerator，感谢原作者。不过我在使用代码的时候发现原项目有很多功能或者使用场景不适合我，因而我在原来项目的基础之上做了大的调整。在原来的基础之上修改点如下：
+注：本项目fork自https://github.com/zhaohaihao/CodeGenerator ，感谢原作者zhaohaihao。不过我在使用代码的时候发现原项目有很多功能或者使用场景不适合我，因而我在原来项目的基础之上做了大的调整。在原来的基础之上修改点如下：
 1、去掉依赖tk.mybatis和pagehelper的依赖，完全自已实现相关的逻辑，因为我还是觉得mybatis原始的实现方式更适合我；
 2、实现自定义的CustomizeJavaMapperGenerator和CustomizeXMLMapperGenerator，可以灵活的定制自已经需要生成的功能；
 3、实现了按条件的分页查询，并在Controler层实现统一返回结果；
