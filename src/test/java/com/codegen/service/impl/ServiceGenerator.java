@@ -2,69 +2,98 @@ package com.codegen.service.impl;
 
 import java.io.File;
 import java.io.FileWriter;
-import java.util.HashMap;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import com.codegen.service.CodeGenerator;
 import com.codegen.service.CodeGeneratorManager;
+import com.codegen.util.DataUtil;
+import com.codegen.util.FileUtil;
+import com.codegen.util.MethodUtil;
 import com.codegen.util.StringUtils;
 
 import freemarker.template.Configuration;
+
 /**
- * Service层 代码生成器
- * Created by zhh on 2017/09/20.
+ * Service层 代码生成器 Created by zhh on 2017/09/20.
  */
 public class ServiceGenerator extends CodeGeneratorManager implements CodeGenerator {
 
-	@Override
-	public void genCode(String tableName, String modelName, String sign) {
-		Configuration cfg = getFreemarkerConfiguration();
-		String customMapping = "/" + sign + "/";
-		String modelNameUpperCamel = StringUtils.isNullOrEmpty(modelName) ? tableNameConvertUpperCamel(tableName) : modelName;
-		
-		Map<String, Object> data = getDataMapInit(modelName, sign, modelNameUpperCamel);
-		try {
-			// 创建 Service 接口
-			File serviceFile = new File(PROJECT_PATH + JAVA_PATH + PACKAGE_PATH_SERVICE + customMapping
-					+ modelNameUpperCamel + "Service.java");
-			// 查看父级目录是否存在, 不存在则创建
-			if (!serviceFile.getParentFile().exists()) {
-				serviceFile.getParentFile().mkdirs();
-			}
-			cfg.getTemplate("service.ftl").process(data, new FileWriter(serviceFile));
-			logger.info(modelNameUpperCamel + "Service.java 生成成功!");
-			
-			// 创建 Service 接口的实现类
-			File serviceImplFile = new File(PROJECT_PATH + JAVA_PATH + PACKAGE_PATH_SERVICE_IMPL + customMapping
-					+ modelNameUpperCamel + "ServiceImpl.java");
-			// 查看父级目录是否存在, 不存在则创建
-			if (!serviceImplFile.getParentFile().exists()) {
-				serviceImplFile.getParentFile().mkdirs();
-			}
-			cfg.getTemplate("service-impl.ftl").process(data, new FileWriter(serviceImplFile));
-			logger.info(modelNameUpperCamel + "ServiceImpl.java 生成成功!");
-		} catch (Exception e) {
-			throw new RuntimeException("Service 生成失败!", e);
-		}
-	}
-	
-	/**
-	 * 预置页面所需数据
-	 * @param tableName 表名
-	 * @param modelName 自定义实体类名, 为null则默认将表名下划线转成大驼峰形式
-	 * @param sign 区分字段, 规定如表 gen_test_demo, 则 test 即为区分字段
-	 * @param modelNameUpperCamel 首字为大写的实体类名
-	 * @return
-	 */
-	private Map<String, Object> getDataMapInit(String modelName, String sign, String modelNameUpperCamel) {
-		Map<String, Object> data = new HashMap<>();
-		data.put("date", DATE);
-		data.put("author", AUTHOR);
-		data.put("sign", sign);
-		data.put("modelNameUpperCamel", modelNameUpperCamel);
-		data.put("modelNameLowerCamel", StringUtils.toLowerCaseFirstOne(modelNameUpperCamel));
-		data.put("basePackage", BASE_PACKAGE);
-		
-		return data;
-	}
+    @Override
+    public void genCode(String tableName) {
+        String modelName = StringUtils.tableNameConvertUpperCamel(tableName);
+        Configuration cfg = getFreemarkerConfiguration();
+        String customMapping = "/";
+        String modelNameUpperCamel = modelName;
+
+        Map<String, Object> data = DataUtil.getDataMapInit(tableName, modelName, modelNameUpperCamel);
+        try {
+
+            List<String> serviceMethodsList = getServiceMethods(getMapperJavaFilePath(tableName, modelName,
+                                                                                      customMapping,
+                                                                                      modelNameUpperCamel),
+                                                                modelNameUpperCamel);
+            data.put("serviceMethodsList", serviceMethodsList);
+
+            // 创建 Service 接口
+            File serviceFile = new File(PROJECT_PATH + JAVA_PATH + PACKAGE_PATH_SERVICE + customMapping
+                                        + modelNameUpperCamel + "Service.java");
+            // 查看父级目录是否存在, 不存在则创建
+            if (!serviceFile.getParentFile().exists()) {
+                serviceFile.getParentFile().mkdirs();
+            }
+            cfg.getTemplate("service.ftl").process(data, new FileWriter(serviceFile));
+            logger.info(modelNameUpperCamel + "Service.java 生成成功!");
+
+        } catch (Exception e) {
+            throw new RuntimeException("Service 生成失败!", e);
+        }
+    }
+
+    private String getMapperJavaFilePath(String tableName, String modelName, String customMapping,
+                                         String modelNameUpperCamel) {
+        String path = PROJECT_PATH + JAVA_PATH + PACKAGE_PATH_MAPPER + customMapping + modelNameUpperCamel
+                      + "Mapper.java";
+        return path;
+    }
+
+    /**
+     * 从给定的Mapper及其中的方法，生成Service需要的方法
+     * 
+     * @param mapperJavaFilePath
+     * @return
+     * @throws IOException
+     */
+    public static List<String> getServiceMethods(String mapperJavaFilePath, String modelName) throws IOException {
+        List<String> serviceMethodsContentList = new ArrayList<String>();
+        String methodPattern = "([^import|^package]).*;";
+        List<String> contentList = FileUtil.readFile2List(mapperJavaFilePath);
+        for (String content : contentList) {
+            boolean match = Pattern.matches(methodPattern, content);
+            if (match) {
+                // 去掉前后的空格
+                content = content.trim();
+                // 去掉后面的";"
+                content = content.substring(0, content.length() - 1);
+                String methodType = MethodUtil.getMethodReturnType(content);
+                String methodName = MethodUtil.getMethodName(content);
+                String methodParamType = MethodUtil.getMethodParamType(content);
+                String methodParanName = MethodUtil.getMethodParamName(content);
+                String mapperName = StringUtils.toLowerCaseFirstOne(modelName) + "Mapper";
+                StringBuilder methodContent = new StringBuilder();
+                methodContent.append(StringUtils.FOUR_SPACES).append("public ").append(methodType).append(" ").append(methodName).append("(").append(MethodUtil.getMethodParamType(methodName,
+                                                                                                                                                                                   methodParamType,
+                                                                                                                                                                                   modelName)).append(" ").append(methodParanName).append(")").append("{\n");
+                methodContent.append(StringUtils.FOUR_SPACES).append(StringUtils.FOUR_SPACES);
+                methodContent.append("return ").append(mapperName).append("."
+                                     + methodName).append("(").append(methodParanName).append(")").append(";\n");
+                methodContent.append(StringUtils.FOUR_SPACES).append("}\n");
+                serviceMethodsContentList.add(methodContent.toString());
+            }
+        }
+        return serviceMethodsContentList;
+    }
 }
