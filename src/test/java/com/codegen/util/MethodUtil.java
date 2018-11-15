@@ -5,6 +5,9 @@
  */
 package com.codegen.util;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * ClassName:MethodUtil 根据Mybatis生成的mapper类中定义的方法，<br>
  * 获取其方法的相关属性（如方法类型，方法名称、方法参数类型、方法参数名称以及方法本身的行为类型）的工具类 <br/>
@@ -84,28 +87,52 @@ public class MethodUtil {
     /**
      * 获取方法的参数类型
      * 
-     * @param str 传入的参数是mapper中定义的方法，如"int deleteByPrimaryKey(Integer id);"
+     * @param str 传入的参数是mapper中定义的方法，如"int deleteByPrimaryKey(Integer id);"则返回"Integer" 或"int
+     * deleteByPrimaryKey(@Param("id") Integer id);"则返回"@Param("id") Integer"
      * @return 返回方法的类型，如根据实例会返回Integer
      */
-    public static String getMethodParamType(String str) {
+    private static String getMethodParamType(String str) {
         StringBuilder methodParamType = new StringBuilder();
-        boolean paramBegin = false;
+        boolean commentParam = false;
+        int blankTimes = 0;
         for (int i = 0; i < str.length(); i++) {
             char c = str.charAt(i);
-            if (c == 40) {
-                paramBegin = true;
-                continue;
+            if (methodParamType.length() == 0 && c == 64) {// 第一个字符是"@"，表示是注解符号
+                commentParam = true;
             }
-            if (paramBegin == false) {
-                continue;
-            }
-            if (c == 32 || c == 41) { // 遇到了方法中的空格" "串或者遇到右括号")"，说明参数类型已经提取完成
-                break;
+            if (!commentParam) {
+                if (c == 32 || c == 41) { // 遇到了方法中的空格" "串或者遇到右括号")"，说明参数类型已经提取完成
+                    break;
+                } else {
+                    methodParamType.append(String.valueOf(c));
+                }
             } else {
-                methodParamType.append(String.valueOf(c));
+                if (c == 32) {
+                    blankTimes++;
+                }
+                if (blankTimes == 2 && (c == 32 || c == 41)) { // 遇到了方法中的空格" "串或者遇到右括号")"，说明参数类型已经提取完成
+                    break;
+                } else {
+                    methodParamType.append(String.valueOf(c));
+                }
             }
         }
         return methodParamType.toString();
+    }
+
+    public static List<String> getMethodParamTypeList(String str) {
+        List<String> list = new ArrayList<String>();
+        int startIndex = str.indexOf("(");
+        int endIndex = str.lastIndexOf(")");
+        str = str.substring(startIndex + 1, endIndex);
+        if (str.length() == 0) {// 该方法没有参数
+            return list;
+        }
+        String[] params = str.split(",");
+        for (String param : params) {
+            list.add(getMethodParamType(param.trim()));
+        }
+        return list;
     }
 
     /**
@@ -114,31 +141,28 @@ public class MethodUtil {
      * @param str 传入的参数是mapper中定义的方法，如"int deleteByPrimaryKey(Integer id);"
      * @return 返回参数的名称，如根据示例会返回id
      */
-    public static String getMethodParamName(String str) {
-        StringBuilder methodParamName = new StringBuilder();
-        boolean paramBegin = false;
-        boolean paramBeginName = false;
-        for (int i = 0; i < str.length(); i++) {
-            char c = str.charAt(i);
-            if (c == 40) {
-                paramBegin = true;
-                continue;
-            }
-            if (paramBegin == false) {
-                continue;
-            }
-            if (c == 32 && !paramBeginName) { // 遇到了方法中的空格" "串，说明参数类型已经提取完成
-                paramBeginName = true;
-                continue;
-            } else if (!paramBeginName) {
-                continue;
-            }
-            if (c == 41) {
-                break;
-            }
-            methodParamName.append(String.valueOf(c));
+    private static String getMethodParamName(String str) {
+        String[] strArr = str.split(" ");
+        if (str.charAt(0) == 64) {// 第一个字符是"@"，表示是注解符号
+            return strArr[2];
+        } else {
+            return strArr[1];
         }
-        return methodParamName.toString();
+    }
+
+    public static List<String> getMethodParamNameList(String str) {
+        List<String> list = new ArrayList<String>();
+        int startIndex = str.indexOf("(");
+        int endIndex = str.lastIndexOf(")");
+        str = str.substring(startIndex + 1, endIndex);
+        if (str.length() == 0) {// 该方法没有参数
+            return list;
+        }
+        String[] params = str.split(",");
+        for (String param : params) {
+            list.add(getMethodParamName(param.trim()));
+        }
+        return list;
     }
 
     /**
@@ -171,8 +195,24 @@ public class MethodUtil {
 
     public static String getMethodParamType(String methodName, String methodParamType, String modelName) {
         if ("selectByPage".equals(methodName)) {
-            return "Page<"+modelName+">";
+            return "Page<" + modelName + ">";
         }
         return methodParamType;
+    }
+
+    public static String listToString(List<String> paramNames) {
+        StringBuilder str = new StringBuilder();
+        if (paramNames == null || paramNames.size() == 0) {
+            return "";
+        }
+        int index = 0;
+        for (String paramName : paramNames) {
+            str.append(paramName);
+            if (index < paramNames.size() - 1) {
+                str.append(",");
+            }
+            index++;
+        }
+        return str.toString();
     }
 }

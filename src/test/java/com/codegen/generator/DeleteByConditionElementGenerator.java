@@ -48,9 +48,9 @@ public class DeleteByConditionElementGenerator extends AbstractXmlElementGenerat
         
         XmlElement dynamicElement = new XmlElement("where"); //$NON-NLS-1$
         answer.addElement(dynamicElement);
-
+        
         for (IntrospectedColumn introspectedColumn : ListUtilities.removeGeneratedAlwaysColumns(introspectedTable
-                .getNonPrimaryKeyColumns())) {
+                .getAllColumns())) {
             XmlElement isNotNullElement = new XmlElement("if"); //$NON-NLS-1$
             sb.setLength(0);
             sb.append(""+introspectedColumn.getJavaProperty());

@@ -80,16 +80,25 @@ public class ServiceGenerator extends CodeGeneratorManager implements CodeGenera
                 content = content.substring(0, content.length() - 1);
                 String methodType = MethodUtil.getMethodReturnType(content);
                 String methodName = MethodUtil.getMethodName(content);
-                String methodParamType = MethodUtil.getMethodParamType(content);
-                String methodParanName = MethodUtil.getMethodParamName(content);
+                List<String> methodParamTypeList = MethodUtil.getMethodParamTypeList(content);
+                List<String> methodParanNameList = MethodUtil.getMethodParamNameList(content);
                 String mapperName = StringUtils.toLowerCaseFirstOne(modelName) + "Mapper";
-                StringBuilder methodContent = new StringBuilder();
-                methodContent.append(StringUtils.FOUR_SPACES).append("public ").append(methodType).append(" ").append(methodName).append("(").append(MethodUtil.getMethodParamType(methodName,
-                                                                                                                                                                                   methodParamType,
-                                                                                                                                                                                   modelName)).append(" ").append(methodParanName).append(")").append("{\n");
+                StringBuilder methodContent = new StringBuilder();                
+                methodContent.append(StringUtils.FOUR_SPACES).append("public ").append(methodType).append(" ")
+                    .append(methodName).append("(");
+                int index = 0;
+                for(String methodParamType : methodParamTypeList) {
+                    methodContent.append(MethodUtil.getMethodParamType(methodName,methodParamType,modelName));
+                    methodContent.append(" ").append(methodParanNameList.get(index));
+                    if(index<methodParamTypeList.size()-1) {
+                        methodContent.append(", ");
+                    }
+                    index++;                     
+                }                    
+                methodContent.append(")").append("{\n");
                 methodContent.append(StringUtils.FOUR_SPACES).append(StringUtils.FOUR_SPACES);
                 methodContent.append("return ").append(mapperName).append("."
-                                     + methodName).append("(").append(methodParanName).append(")").append(";\n");
+                                     + methodName).append("(").append(MethodUtil.listToString(methodParanNameList)).append(")").append(";\n");
                 methodContent.append(StringUtils.FOUR_SPACES).append("}\n");
                 serviceMethodsContentList.add(methodContent.toString());
             }

@@ -11,6 +11,8 @@ import ${pageClassPath};
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 /**
  *
  * Created by ${author} on ${date}.

@@ -27,11 +27,16 @@ public class CustomizeXMLMapperGenerator extends XMLMapperGenerator{
     }
     protected XmlElement getSqlMapElement() {
         XmlElement xmlElement = super.getSqlMapElement();
+        addSelectByConditionElement(xmlElement);
         addSelectAllElement(xmlElement);
         addSelectByPageElement(xmlElement);
         addCountByConditionELement(xmlElement);
         addDeleteByConditionELement(xmlElement);
         return xmlElement;
+    }
+    protected void addSelectByConditionElement(XmlElement parentElement) {
+        AbstractXmlElementGenerator elementGenerator = new SelectByConditionElementGenerator();
+        initializeAndExecuteGenerator(elementGenerator, parentElement);
     }
     protected void addSelectAllElement(XmlElement parentElement) {
         AbstractXmlElementGenerator elementGenerator = new SimpleSelectAllElementGenerator();

@@ -30,6 +30,7 @@ public class CustomizeJavaMapperGenerator extends JavaMapperGenerator {
         List<CompilationUnit> answer = super.getCompilationUnits();
         for(CompilationUnit unit:answer) {
             if(unit.getClass().equals(Interface.class)) {
+                addSelectByConditionMethod((Interface)unit);
                 addSelectAllMethod((Interface)unit);
                 addSelectByPageMethod((Interface)unit);
                 addCountByConditionMethod((Interface)unit);
@@ -37,6 +38,11 @@ public class CustomizeJavaMapperGenerator extends JavaMapperGenerator {
             }
         }
         return answer;
+    }
+    
+    protected void addSelectByConditionMethod(Interface interfaze) {
+        AbstractJavaMapperMethodGenerator methodGenerator = new SelectByConditionMethodGenerator();
+        initializeAndExecuteGenerator(methodGenerator, interfaze);
     }
     
     protected void addSelectAllMethod(Interface interfaze) {

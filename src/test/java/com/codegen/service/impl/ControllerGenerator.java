@@ -76,8 +76,8 @@ public class ControllerGenerator extends CodeGeneratorManager implements CodeGen
                 content = content.trim();
                 String methodReturnType = MethodUtil.getMethodReturnType(content);
                 String methodName = MethodUtil.getMethodName(content);
-                String methodParamType = MethodUtil.getMethodParamType(content);
-                String methodParanName = MethodUtil.getMethodParamName(content);
+                List<String> methodParamTypeList = MethodUtil.getMethodParamTypeList(content);
+                List<String> methodParanNameList = MethodUtil.getMethodParamNameList(content);
                 String methodActionType = MethodUtil.getMethodActionType(content);
                 String serviceName = StringUtils.toLowerCaseFirstOne(modelName) + "Service";
                 // 对相同功能的方法进行去除，如insert和insertSelective方法功能上相同，但考虑到insertSelective
@@ -109,26 +109,44 @@ public class ControllerGenerator extends CodeGeneratorManager implements CodeGen
                     methodContent.append(StringUtils.FOUR_SPACES).append("@RequestMapping(\"" + methodActionType
                                                                          + "\")\n");
                     methodContent.append(StringUtils.FOUR_SPACES).append("@ResponseBody\n");
-                    methodContent.append(StringUtils.FOUR_SPACES).append("public Result<Page<").append(MethodUtil.typeConvert(methodReturnType)).append(">> ").append(methodName).append("(").append(MethodUtil.getMethodParamType(methodName,
-                                                                                                                                                                                                                                   methodParamType,
-                                                                                                                                                                                                                                   modelName)).append(" ").append(methodParanName).append(")").append("{\n");
+                    methodContent.append(StringUtils.FOUR_SPACES).append("public Result<Page<").append(MethodUtil.typeConvert(methodReturnType)).append(">> ").append(methodName).append("(");
+                    int index = 0;
+                    for(String methodParamType : methodParamTypeList) {
+                        methodContent.append(MethodUtil.getMethodParamType(methodName,methodParamType,modelName));
+                        methodContent.append(" ").append(methodParanNameList.get(index));
+                        if(index<methodParamTypeList.size()-1) {
+                            methodContent.append(", ");
+                        }
+                        index++;                     
+                    }    
+                    methodContent.append(")").append("{\n");
                     methodContent.append(StringUtils.FOUR_SPACES).append(StringUtils.FOUR_SPACES).append(MethodUtil.typeConvert(methodReturnType)).append(" list = null;\n");
-                    methodContent.append(StringUtils.FOUR_SPACES).append(StringUtils.FOUR_SPACES).append(methodParanName).append(" = ").append(methodParanName).append(".sequentialDisplayCalculate(").append(serviceName).append(".count(").append(methodParanName).append(".getObj()));\n");
-                    methodContent.append(StringUtils.FOUR_SPACES).append(StringUtils.FOUR_SPACES).append("if (").append(methodParanName).append(".getTotalCount() > 0) {\n");
-                    methodContent.append(StringUtils.FOUR_SPACES).append(StringUtils.FOUR_SPACES).append(StringUtils.FOUR_SPACES).append("list = ").append(serviceName).append(".selectByPage(").append(methodParanName).append(");\n");
+                    methodContent.append(StringUtils.FOUR_SPACES).append(StringUtils.FOUR_SPACES).append(methodParanNameList.get(0)).append(" = ").append(methodParanNameList.get(0)).append(".sequentialDisplayCalculate(").append(serviceName).append(".count(").append(methodParanNameList.get(0)).append(".getObj()));\n");
+                    methodContent.append(StringUtils.FOUR_SPACES).append(StringUtils.FOUR_SPACES).append("if (").append(methodParanNameList.get(0)).append(".getTotalCount() > 0) {\n");
+                    methodContent.append(StringUtils.FOUR_SPACES).append(StringUtils.FOUR_SPACES).append(StringUtils.FOUR_SPACES).append("list = ").append(serviceName).append(".selectByPage(").append(methodParanNameList.get(0)).append(");\n");
                     methodContent.append(StringUtils.FOUR_SPACES).append(StringUtils.FOUR_SPACES).append("}\n");
-                    methodContent.append(StringUtils.FOUR_SPACES).append(StringUtils.FOUR_SPACES).append("Page<List<").append(modelName).append(">> result = new Page<List<").append(modelName).append(">>(").append(methodParanName).append(", list);\n");
+                    methodContent.append(StringUtils.FOUR_SPACES).append(StringUtils.FOUR_SPACES).append("Page<List<").append(modelName).append(">> result = new Page<List<").append(modelName).append(">>(").append(methodParanNameList.get(0)).append(", list);\n");
                     methodContent.append(StringUtils.FOUR_SPACES).append(StringUtils.FOUR_SPACES).append("return Result.success(result);\n");
                     methodContent.append(StringUtils.FOUR_SPACES).append("}\n");
                 } else {
                     methodContent.append(StringUtils.FOUR_SPACES).append("@RequestMapping(\"" + methodActionType
                                                                          + "\")\n");
                     methodContent.append(StringUtils.FOUR_SPACES).append("@ResponseBody\n");
-                    methodContent.append(StringUtils.FOUR_SPACES).append("public Result<").append(MethodUtil.typeConvert(methodReturnType)).append("> ").append(methodName).append("(").append(MethodUtil.getMethodParamType(methodName,
-                                                                                                                                                                                                                             methodParamType,
-                                                                                                                                                                                                                             modelName)).append(" ").append(methodParanName).append(")").append("{\n");
+                    methodContent.append(StringUtils.FOUR_SPACES).append("public Result<").append(MethodUtil.typeConvert(methodReturnType)).append("> ").append(methodName).append("(");
+                    
+                    int index = 0;
+                    for(String methodParamType : methodParamTypeList) {
+                        methodContent.append(MethodUtil.getMethodParamType(methodName,methodParamType,modelName));
+                        methodContent.append(" ").append(methodParanNameList.get(index));
+                        if(index<methodParamTypeList.size()-1) {
+                            methodContent.append(", ");
+                        }
+                        index++;                     
+                    }    
+                    
+                    methodContent.append(")").append("{\n");
                     methodContent.append(StringUtils.FOUR_SPACES).append(StringUtils.FOUR_SPACES).append("return Result.success(").append(serviceName).append("."
-                                                                                                                                                              + methodName).append("(").append(methodParanName).append("))").append(";\n");
+                                                                                                                                                              + methodName).append("(").append(MethodUtil.listToString(methodParanNameList)).append("))").append(";\n");
                     methodContent.append(StringUtils.FOUR_SPACES).append("}\n");
                 }
                 methodContentMap.put(methodActionType, methodContent.toString());
