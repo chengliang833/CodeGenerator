@@ -1,4 +1,4 @@
-package com.codegen.generator;
+package wang.ulane.gen.generator;
 
 import org.mybatis.generator.api.dom.xml.XmlElement;
 import org.mybatis.generator.codegen.mybatis3.xmlmapper.XMLMapperGenerator;

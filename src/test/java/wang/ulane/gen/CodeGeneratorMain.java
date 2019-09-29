@@ -1,7 +1,7 @@
-package com.codegen;
+package wang.ulane.gen;
 
-import com.codegen.main.TableDef;
-import com.codegen.service.CodeGeneratorManager;
+import wang.ulane.gen.main.TableDef;
+import wang.ulane.gen.service.CodeGeneratorManager;
 
 /**
  * 代码生成器启动项

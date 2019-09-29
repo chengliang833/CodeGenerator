@@ -1,4 +1,4 @@
-package com.codegen.generator;
+package wang.ulane.gen.generator;
 
 import java.util.List;
 

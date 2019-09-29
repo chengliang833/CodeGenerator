@@ -1,10 +1,11 @@
-package com.codegen.util;
+package wang.ulane.gen.util;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import com.codegen.service.CodeGeneratorConfig;
 import com.google.common.base.CaseFormat;
+
+import wang.ulane.gen.service.CodeGeneratorConfig;
 
 public class DataUtil extends CodeGeneratorConfig{
     /**

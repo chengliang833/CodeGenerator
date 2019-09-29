@@ -1,4 +1,4 @@
-package com.codegen.util;
+package wang.ulane.gen.util;
 
 import java.util.ArrayList;
 import java.util.List;

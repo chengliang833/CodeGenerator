@@ -1,4 +1,4 @@
-package com.codegen.util;
+package wang.ulane.gen.util;
 
 import com.google.common.base.CaseFormat;
 

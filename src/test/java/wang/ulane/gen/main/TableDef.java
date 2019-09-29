@@ -1,4 +1,4 @@
-package com.codegen.main;
+package wang.ulane.gen.main;
 
 public class TableDef {
 	private String tableName;

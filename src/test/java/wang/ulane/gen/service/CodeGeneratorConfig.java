@@ -1,9 +1,9 @@
-package com.codegen.service;
+package wang.ulane.gen.service;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.codegen.main.TableDef;
+import wang.ulane.gen.main.TableDef;
 
 public class CodeGeneratorConfig {
 	// JDBC 相关配置信息

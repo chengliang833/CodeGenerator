@@ -1,4 +1,4 @@
-package com.codegen.service.impl;
+package wang.ulane.gen.service.impl;
 
 import java.io.File;
 import java.io.IOException;
@@ -19,10 +19,10 @@ import org.mybatis.generator.config.TableConfiguration;
 import org.mybatis.generator.exception.InvalidConfigurationException;
 import org.mybatis.generator.internal.DefaultShellCallback;
 
-import com.codegen.generator.CustomizeJavaMapperGenerator;
-import com.codegen.service.CodeGenerator;
-import com.codegen.service.CodeGeneratorManager;
-import com.codegen.util.StringUtils;
+import wang.ulane.gen.generator.CustomizeJavaMapperGenerator;
+import wang.ulane.gen.service.CodeGenerator;
+import wang.ulane.gen.service.CodeGeneratorManager;
+import wang.ulane.gen.util.StringUtils;
 
 public class ModelAndMapperGenerator extends CodeGeneratorManager implements CodeGenerator {
 	

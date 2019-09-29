@@ -1,4 +1,4 @@
-package com.codegen.service;
+package wang.ulane.gen.service;
 
 import java.io.File;
 import java.io.IOException;
@@ -21,12 +21,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.alibaba.druid.util.StringUtils;
-import com.codegen.main.TableDef;
-import com.codegen.service.impl.ModelAndMapperGenerator;
-import com.codegen.service.impl.ServiceGenerator;
 
 import freemarker.template.Configuration;
 import freemarker.template.TemplateExceptionHandler;
+import wang.ulane.gen.main.TableDef;
+import wang.ulane.gen.service.impl.ModelAndMapperGenerator;
+import wang.ulane.gen.service.impl.ServiceGenerator;
 
 /**
  * 代码生成器基础项 (常量信息 & 通用方法)

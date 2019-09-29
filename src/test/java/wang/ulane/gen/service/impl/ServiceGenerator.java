@@ -1,4 +1,4 @@
-package com.codegen.service.impl;
+package wang.ulane.gen.service.impl;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -8,14 +8,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-import com.codegen.service.CodeGenerator;
-import com.codegen.service.CodeGeneratorManager;
-import com.codegen.util.DataUtil;
-import com.codegen.util.FileUtil;
-import com.codegen.util.MethodUtil;
-import com.codegen.util.StringUtils;
-
 import freemarker.template.Configuration;
+import wang.ulane.gen.service.CodeGenerator;
+import wang.ulane.gen.service.CodeGeneratorManager;
+import wang.ulane.gen.util.DataUtil;
+import wang.ulane.gen.util.FileUtil;
+import wang.ulane.gen.util.MethodUtil;
+import wang.ulane.gen.util.StringUtils;
 
 public class ServiceGenerator extends CodeGeneratorManager implements CodeGenerator {
 	
