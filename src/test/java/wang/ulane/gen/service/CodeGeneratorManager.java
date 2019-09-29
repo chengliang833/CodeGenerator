@@ -22,6 +22,7 @@ import org.slf4j.LoggerFactory;
 
 import com.alibaba.druid.util.StringUtils;
 
+import freemarker.cache.ClassTemplateLoader;
 import freemarker.template.Configuration;
 import freemarker.template.TemplateExceptionHandler;
 import wang.ulane.gen.main.TableDef;
@@ -139,10 +140,15 @@ public class CodeGeneratorManager extends CodeGeneratorConfig {
         Configuration cfg = null;
         try {
             cfg = new Configuration(Configuration.VERSION_2_3_23);
-            cfg.setDirectoryForTemplateLoading(new File(TEMPLATE_FILE_PATH));
+            if(StringUtils.isEmpty(TEMPLATE_FILE_PATH)){
+            	cfg.setClassForTemplateLoading(this.getClass(), "/generator/template");
+            	cfg.setTemplateLoader(new ClassTemplateLoader(this.getClass(), "/generator/template"));
+            }else{
+            	cfg.setDirectoryForTemplateLoading(new File(TEMPLATE_FILE_PATH));
+            }
             cfg.setDefaultEncoding("UTF-8");
             cfg.setTemplateExceptionHandler(TemplateExceptionHandler.IGNORE_HANDLER);
-        } catch (IOException e) {
+        } catch (Exception e) {
             throw new RuntimeException("Freemarker 模板环境初始化异常!", e);
         }
         return cfg;
@@ -171,7 +177,7 @@ public class CodeGeneratorManager extends CodeGeneratorConfig {
 
         JAVA_PATH = prop.getProperty("java.path");
         RESOURCES_PATH = prop.getProperty("resources.path");
-        TEMPLATE_FILE_PATH = PROJECT_PATH + prop.getProperty("template.file.path");
+        TEMPLATE_FILE_PATH = StringUtils.isEmpty(prop.getProperty("template.file.path"))?"":(PROJECT_PATH + prop.getProperty("template.file.path"));
 
         MODEL_PACKAGE = prop.getProperty("model.package");
         MAPPER_PACKAGE = prop.getProperty("mapper.package");
