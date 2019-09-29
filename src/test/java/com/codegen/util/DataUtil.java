@@ -1,29 +1,11 @@
-/*
- * TOP SECRET
- * Copyright 2006-2015 Transsion.com All right reserved. This software is the
- * confidential and proprietary information of Transsion.com ("Confidential
- * Information"). You shall not disclose such Confidential Information and shall
- * use it only in accordance with the terms of the license agreement you entered
- * into with Transsion.com.
- */
 package com.codegen.util;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import com.codegen.service.CodeGeneratorConfig;
-import com.codegen.vo.Page;
-import com.codegen.vo.Result;
 import com.google.common.base.CaseFormat;
 
-/** 
- * ClassName:DataUtil <br/> 
- * Date:     2018年10月22日 下午6:05:05 <br/> 
- * @author   fenglibin1982@163.com
- * @Blog     http://blog.csdn.net/fenglibing
- * @version  
- * @see       
- */
 public class DataUtil extends CodeGeneratorConfig{
     /**
      * 预置页面所需数据
@@ -46,8 +28,8 @@ public class DataUtil extends CodeGeneratorConfig{
         data.put("modelPackage", MODEL_PACKAGE);
         data.put("controllerPackage", CONTROLLER_PACKAGE);
         data.put("mapperPackage", MAPPER_PACKAGE);
-        data.put("pageClassPath", Page.class.getName());
-        data.put("resultClassPath", Result.class.getName());
+//        data.put("pageClassPath", Page.class.getName());
+//        data.put("resultClassPath", Result.class.getName());
         return data;
     }
 }

@@ -1,9 +1,10 @@
 package com.codegen.service;
 
-/**
- * 配置信息变量
- * Created by zhh on 2017/09/27.
- */
+import java.util.ArrayList;
+import java.util.List;
+
+import com.codegen.main.TableDef;
+
 public class CodeGeneratorConfig {
 	// JDBC 相关配置信息
 	protected static String JDBC_URL;
@@ -24,6 +25,8 @@ public class CodeGeneratorConfig {
 	protected static String MODEL_PACKAGE;
 	// 项目 Mapper 所在包
 	protected static String MAPPER_PACKAGE;
+	// 项目 MapperXML 所在包
+	protected static String MAPPERXML_PACKAGE;
 	// 项目 Service 所在包
 	protected static String SERVICE_PACKAGE;
 	// 项目 Controller 所在包
@@ -41,4 +44,5 @@ public class CodeGeneratorConfig {
 	// 模板注释中 @date
 	protected static String DATE;
 	
+	public static List<TableDef> TABLES = new ArrayList<TableDef>();
 }

@@ -1,23 +1,8 @@
-/*
- * TOP SECRET Copyright 2006-2015 Transsion.com All right reserved. This software is the confidential and proprietary
- * information of Transsion.com ("Confidential Information"). You shall not disclose such Confidential Information and
- * shall use it only in accordance with the terms of the license agreement you entered into with Transsion.com.
- */
 package com.codegen.util;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * ClassName:MethodUtil 根据Mybatis生成的mapper类中定义的方法，<br>
- * 获取其方法的相关属性（如方法类型，方法名称、方法参数类型、方法参数名称以及方法本身的行为类型）的工具类 <br/>
- * Date: 2018年10月21日 下午2:28:36 <br/>
- * 
- * @author fenglibin1982@163.com
- * @Blog http://blog.csdn.net/fenglibing
- * @version
- * @see
- */
 public class MethodUtil {
 
     /**

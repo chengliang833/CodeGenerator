@@ -4,15 +4,6 @@
 	<groupId>com.codegen</groupId>
 	<artifactId>CodeGenerator</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	
-	<properties>
-		<project.junit.version>4.12</project.junit.version>
-		<project.json.version>2.4</project.json.version>
-		<project.spring.version>5.1.1.RELEASE</project.spring.version>
-		<project.servletapi.versioni>3.1.0</project.servletapi.versioni>
-		<mybatis.version>3.2.7</mybatis.version>
-		<mybatis-spring.version>1.2.2</mybatis-spring.version>
-	</properties>
 
 	<dependencies>
 		<!-- 日志依赖 -->
@@ -62,12 +53,12 @@
 		<dependency>
 			<groupId>org.mybatis</groupId>
 			<artifactId>mybatis</artifactId>
-			<version>${mybatis.version}</version>
+			<version>3.2.7</version>
 		</dependency>
 		<dependency>
 			<groupId>org.mybatis</groupId>
 			<artifactId>mybatis-spring</artifactId>
-			<version>${mybatis-spring.version}</version>
+			<version>1.2.2</version>
 		</dependency>
 		<dependency>
 			<groupId>tk.mybatis</groupId>
@@ -100,50 +91,50 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>${project.junit.version}</version>
+			<version>4.12</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
-			<version>${project.spring.version}</version>
+			<version>5.1.1.RELEASE</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-core</artifactId>
-			<version>${project.spring.version}</version>
+			<version>5.1.1.RELEASE</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-beans</artifactId>
-			<version>${project.spring.version}</version>
+			<version>5.1.1.RELEASE</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
-			<version>${project.spring.version}</version>
+			<version>5.1.1.RELEASE</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-orm</artifactId>
-			<version>${project.spring.version}</version>
+			<version>5.1.1.RELEASE</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-tx</artifactId>
-			<version>${project.spring.version}</version>
+			<version>5.1.1.RELEASE</version>
 			<scope>test</scope>
 		</dependency>
 		<!-- servlet -->
 		<dependency>
 		  <groupId>javax.servlet</groupId>
 		  <artifactId>javax.servlet-api</artifactId>
-		  <version>${project.servletapi.versioni}</version>
+		  <version>3.1.0</version>
 		  <scope>provided</scope>
 		</dependency>
 		<dependency>

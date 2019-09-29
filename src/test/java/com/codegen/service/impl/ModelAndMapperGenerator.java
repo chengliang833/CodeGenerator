@@ -12,9 +12,9 @@ import org.mybatis.generator.api.IntrospectedTable;
 import org.mybatis.generator.api.MyBatisGenerator;
 import org.mybatis.generator.config.Configuration;
 import org.mybatis.generator.config.Context;
-import org.mybatis.generator.config.GeneratedKey;
 import org.mybatis.generator.config.JavaClientGeneratorConfiguration;
 import org.mybatis.generator.config.JavaModelGeneratorConfiguration;
+import org.mybatis.generator.config.SqlMapGeneratorConfiguration;
 import org.mybatis.generator.config.TableConfiguration;
 import org.mybatis.generator.exception.InvalidConfigurationException;
 import org.mybatis.generator.internal.DefaultShellCallback;
@@ -24,14 +24,26 @@ import com.codegen.service.CodeGenerator;
 import com.codegen.service.CodeGeneratorManager;
 import com.codegen.util.StringUtils;
 
-/**
- * Model & Mapper 代码生成器 Created by zhh on 2017/09/20.
- */
 public class ModelAndMapperGenerator extends CodeGeneratorManager implements CodeGenerator {
+	
+	private String sufName = "Mapper";
+	
+    public ModelAndMapperGenerator() {
+		super();
+	}
+    
+	public ModelAndMapperGenerator(String sufName) {
+		super();
+		if(sufName != null){
+			this.sufName = sufName;
+		}
+	}
 
-    @Override
-    public void genCode(String tableName) {
-        String modelName = StringUtils.tableNameConvertUpperCamel(tableName);
+	@Override
+    public void genCode(String tableName, String modelName) {
+    	if(modelName == null){
+    		modelName = StringUtils.tableNameConvertUpperCamel(tableName);
+    	}
         List<String> warnings = null;
         MyBatisGenerator generator = null;
         try {
@@ -111,16 +123,22 @@ public class ModelAndMapperGenerator extends CodeGeneratorManager implements Cod
             JavaClientGeneratorConfiguration javaClientGeneratorConfiguration = new JavaClientGeneratorConfiguration();
             javaClientGeneratorConfiguration.setTargetProject(PROJECT_PATH + JAVA_PATH);
             javaClientGeneratorConfiguration.setTargetPackage(MAPPER_PACKAGE);
-            // javaClientGeneratorConfiguration.setConfigurationType("XMLMAPPER");
+//             javaClientGeneratorConfiguration.setConfigurationType("XMLMAPPER");
             // javaClientGeneratorConfiguration.setConfigurationType("org.mybatis.generator.codegen.mybatis3.javamapper.JavaMapperGenerator");
             javaClientGeneratorConfiguration.setConfigurationType(CustomizeJavaMapperGenerator.class.getName());
             context.setJavaClientGeneratorConfiguration(javaClientGeneratorConfiguration);
             deleteExistsXmlMapperFile(tableName, modelName);
-
+            
+            SqlMapGeneratorConfiguration sqlMapGeneratorConfiguration = new SqlMapGeneratorConfiguration();
+            sqlMapGeneratorConfiguration.setTargetProject(PROJECT_PATH + RESOURCES_PATH);
+            sqlMapGeneratorConfiguration.setTargetPackage(MAPPERXML_PACKAGE);
+            context.setSqlMapGeneratorConfiguration(sqlMapGeneratorConfiguration);
+            
             TableConfiguration tableConfiguration = new TableConfiguration(context);
             tableConfiguration.setTableName(tableName);
             tableConfiguration.setDomainObjectName(modelName);
-            tableConfiguration.setGeneratedKey(new GeneratedKey("id", "Mysql", true, null));
+            tableConfiguration.setMapperName(modelName+this.sufName);
+//            tableConfiguration.setGeneratedKey(new GeneratedKey("id", "Mysql", true, null));
             tableConfiguration.setCountByExampleStatementEnabled(false);
             // org.mybatis.generator.codegen.mybatis3.javamapper.JavaMapperGenerator
             tableConfiguration.setDeleteByExampleStatementEnabled(false);
@@ -135,8 +153,8 @@ public class ModelAndMapperGenerator extends CodeGeneratorManager implements Cod
 
     private void deleteExistsXmlMapperFile(String tableName, String modelName) {
         String modelNameUpperCamel = modelName;
-        String xmlMapperFilePath = PROJECT_PATH + RESOURCES_PATH + "/" + MAPPER_PACKAGE.replaceAll("\\.", "/") + "/"
-                                   + modelNameUpperCamel + "Mapper.xml";
+        String xmlMapperFilePath = PROJECT_PATH + RESOURCES_PATH + "/" + MAPPERXML_PACKAGE.replaceAll("\\.", "/") + "/"
+                                   + modelNameUpperCamel + this.sufName + ".xml";
         File xmlMapperFile = new File(xmlMapperFilePath);
         /**
          * delete the exists mapper file, or the content will be merged with the old when do regenerate.
@@ -145,4 +163,5 @@ public class ModelAndMapperGenerator extends CodeGeneratorManager implements Cod
             xmlMapperFile.delete();
         }
     }
+    
 }

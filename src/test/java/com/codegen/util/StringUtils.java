@@ -3,7 +3,7 @@ package com.codegen.util;
 import com.google.common.base.CaseFormat;
 
 /**
- * 字符串操作常用方法集 Created by zhh on 2017/08/16.
+ * 字符串操作常用方法集
  */
 public class StringUtils {
 

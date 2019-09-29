@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
+import java.util.Set;
 
 import org.mybatis.generator.api.IntrospectedTable.TargetRuntime;
 import org.mybatis.generator.config.Context;
@@ -19,7 +20,8 @@ import org.mybatis.generator.config.SqlMapGeneratorConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.codegen.service.impl.ControllerGenerator;
+import com.alibaba.druid.util.StringUtils;
+import com.codegen.main.TableDef;
 import com.codegen.service.impl.ModelAndMapperGenerator;
 import com.codegen.service.impl.ServiceGenerator;
 
@@ -27,7 +29,7 @@ import freemarker.template.Configuration;
 import freemarker.template.TemplateExceptionHandler;
 
 /**
- * 代码生成器基础项 (常量信息 & 通用方法) Created by zhh on 2017/09/20.
+ * 代码生成器基础项 (常量信息 & 通用方法)
  */
 public class CodeGeneratorManager extends CodeGeneratorConfig {
 
@@ -103,10 +105,14 @@ public class CodeGeneratorManager extends CodeGeneratorConfig {
      * @param flag 标志
      * @param tableNames 表名数组
      */
-    public void genCode(String... tableNames) {
-        for (String tableName : tableNames) {
-            genCodeByTableName(tableName);
-        }
+    public void genCodeMain(String tableName) {
+      genCodeByTableName(tableName, null, null);
+	}
+    public void genCodeMain(String tableName, String modelName) {
+        genCodeByTableName(tableName, modelName, null);
+    }
+    public void genCodeMain(String tableName, String modelName, String mapperSuf) {
+        genCodeByTableName(tableName, modelName, mapperSuf);
     }
 
     /**
@@ -117,10 +123,10 @@ public class CodeGeneratorManager extends CodeGeneratorConfig {
      * @param modelName 实体类名
      * @param flag 标志
      */
-    private void genCodeByTableName(String tableName) {
-        new ModelAndMapperGenerator().genCode(tableName);
-        new ServiceGenerator().genCode(tableName);
-        new ControllerGenerator().genCode(tableName);
+    private void genCodeByTableName(String tableName, String modelName, String mapperSuf) {
+        new ModelAndMapperGenerator(mapperSuf).genCode(tableName, modelName);
+        new ServiceGenerator(mapperSuf).genCode(tableName, modelName);
+//        new ControllerGenerator(mapperSuf).genCode(tableName, modelName);
     }
 
     /**
@@ -169,6 +175,7 @@ public class CodeGeneratorManager extends CodeGeneratorConfig {
 
         MODEL_PACKAGE = prop.getProperty("model.package");
         MAPPER_PACKAGE = prop.getProperty("mapper.package");
+        MAPPERXML_PACKAGE = prop.getProperty("mapperxml.package");
         SERVICE_PACKAGE = prop.getProperty("service.package");
         CONTROLLER_PACKAGE = prop.getProperty("controller.package");
 
@@ -176,9 +183,19 @@ public class CodeGeneratorManager extends CodeGeneratorConfig {
         PACKAGE_PATH_CONTROLLER = packageConvertPath(CONTROLLER_PACKAGE);
         PACKAGE_PATH_MAPPER = packageConvertPath(MAPPER_PACKAGE);
 
-        AUTHOR = prop.getProperty("author");
-        String dateFormat = "".equals(prop.getProperty("date-format")) ? "yyyy/MM/dd" : prop.getProperty("date-format");
+        AUTHOR = "";
+        String dateFormat = StringUtils.isEmpty(prop.getProperty("date-format")) ? "yyyy/MM/dd" : prop.getProperty("date-format");
         DATE = new SimpleDateFormat(dateFormat).format(new Date());
+        
+        Set<Object> propSet = prop.keySet();
+        for(Object p:propSet){
+        	String key = p.toString();
+        	String[] values = prop.getProperty(p.toString()).split(",");
+        	if(key.startsWith("table_")){
+        		TABLES.add(new TableDef(key.substring(6), values[0], values.length>1?values[1]:null));
+        	}
+        }
+        
     }
 
     /**

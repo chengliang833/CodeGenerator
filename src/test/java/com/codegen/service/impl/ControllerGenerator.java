@@ -18,14 +18,24 @@ import com.codegen.util.StringUtils;
 
 import freemarker.template.Configuration;
 
-/**
- * Controller层 代码生成器 Created by zhh on 2017/09/20.
- */
 public class ControllerGenerator extends CodeGeneratorManager implements CodeGenerator {
 
-    @Override
-    public void genCode(String tableName) {
-        String modelName = StringUtils.tableNameConvertUpperCamel(tableName);
+	private String sufName = "Mapper";
+
+	public ControllerGenerator() {
+		super();
+	}
+    public ControllerGenerator(String sufName) {
+		super();
+		if(sufName != null){
+			this.sufName = sufName;
+		}
+	}
+	@Override
+    public void genCode(String tableName, String modelName) {
+    	if(modelName == null){
+    		modelName = StringUtils.tableNameConvertUpperCamel(tableName);
+    	}
         Configuration cfg = getFreemarkerConfiguration();
         String customMapping = "/";
         String modelNameUpperCamel = modelName;
@@ -53,7 +63,7 @@ public class ControllerGenerator extends CodeGeneratorManager implements CodeGen
     private String getMapperJavaFilePath(String tableName, String modelName, String customMapping,
                                          String modelNameUpperCamel) {
         String path = PROJECT_PATH + JAVA_PATH + PACKAGE_PATH_MAPPER + customMapping + modelNameUpperCamel
-                      + "Mapper.java";
+                      + this.sufName + ".java";
         return path;
     }
 
