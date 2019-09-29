@@ -78,7 +78,7 @@ public class CodeGeneratorManager extends CodeGeneratorConfig {
 
         Properties p = new Properties();
         // 生成时去掉所有注释
-        p.setProperty(PropertyRegistry.COMMENT_GENERATOR_SUPPRESS_ALL_COMMENTS, "true");
+        p.setProperty(PropertyRegistry.COMMENT_GENERATOR_SUPPRESS_ALL_COMMENTS, "false");
         context.getCommentGenerator().addConfigurationProperties(p);
         JavaTypeResolverConfiguration javaTypeResolverConfiguration = new JavaTypeResolverConfiguration();
         javaTypeResolverConfiguration.addProperty(PropertyRegistry.TYPE_RESOLVER_FORCE_BIG_DECIMALS,"false");
