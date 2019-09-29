@@ -76,6 +76,7 @@ public class CodeGeneratorManager extends CodeGeneratorConfig {
         context.setTargetRuntime(TargetRuntime.MYBATIS3.name());
         context.addProperty(PropertyRegistry.CONTEXT_BEGINNING_DELIMITER, "`");
         context.addProperty(PropertyRegistry.CONTEXT_ENDING_DELIMITER, "`");
+        context.addProperty(PropertyRegistry.CONTEXT_JAVA_FILE_ENCODING, "UTF-8");
 
         Properties p = new Properties();
         // 生成时去掉所有注释
