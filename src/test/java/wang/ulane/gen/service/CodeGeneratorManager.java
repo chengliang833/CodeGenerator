@@ -1,6 +1,7 @@
 package wang.ulane.gen.service;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
@@ -214,7 +215,15 @@ public class CodeGeneratorManager extends CodeGeneratorConfig {
         Properties prop = null;
         try {
             prop = new Properties();
-            InputStream in = CodeGeneratorManager.class.getClassLoader().getResourceAsStream("generatorConfig.properties");
+            File file = new File(PROJECT_PATH+"/src/main/resources/generatorConfig.properties");
+            InputStream in;
+            if(file.exists()){
+            	System.out.println("use custom file");
+            	in = new FileInputStream(file);
+            }else{
+            	System.out.println("use exists file");
+            	in = CodeGeneratorManager.class.getClassLoader().getResourceAsStream("generatorConfig.properties");
+            }
             prop.load(in);
         } catch (Exception e) {
             throw new RuntimeException("加载配置文件异常!", e);
