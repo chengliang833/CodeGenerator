@@ -12,6 +12,7 @@ import org.mybatis.generator.api.IntrospectedTable;
 import org.mybatis.generator.api.MyBatisGenerator;
 import org.mybatis.generator.config.Configuration;
 import org.mybatis.generator.config.Context;
+import org.mybatis.generator.config.GeneratedKey;
 import org.mybatis.generator.config.JavaClientGeneratorConfiguration;
 import org.mybatis.generator.config.JavaModelGeneratorConfiguration;
 import org.mybatis.generator.config.SqlMapGeneratorConfiguration;
@@ -27,16 +28,18 @@ import wang.ulane.gen.util.StringUtils;
 public class ModelAndMapperGenerator extends CodeGeneratorManager implements CodeGenerator {
 	
 	private String sufName = "Mapper";
+	private String genKey = null;
 	
     public ModelAndMapperGenerator() {
 		super();
 	}
     
-	public ModelAndMapperGenerator(String sufName) {
+	public ModelAndMapperGenerator(String sufName, String genKey) {
 		super();
 		if(sufName != null){
 			this.sufName = sufName;
 		}
+		this.genKey = genKey;
 	}
 
 	@Override
@@ -144,6 +147,11 @@ public class ModelAndMapperGenerator extends CodeGeneratorManager implements Cod
             tableConfiguration.setDeleteByExampleStatementEnabled(false);
             tableConfiguration.setSelectByExampleStatementEnabled(false);
             tableConfiguration.setUpdateByExampleStatementEnabled(false);
+            if(genKey != null){
+            	GeneratedKey generatedKey = new GeneratedKey(genKey, "JDBC", true, null);
+            	tableConfiguration.setGeneratedKey(generatedKey);
+            }
+            
             context.addTableConfiguration(tableConfiguration);
         } catch (Exception e) {
             throw new RuntimeException("ModelAndMapperGenerator 初始化环境异常!", e);

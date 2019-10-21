@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="wang.ulane.gen.mapper.SmsJrnDao">
+  <resultMap id="BaseResultMap" type="wang.ulane.gen.model.SmsJrn">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="jrn_no" jdbcType="VARCHAR" property="jrnNo" />
+    <result column="snd_dt" jdbcType="VARCHAR" property="sndDt" />
+    <result column="snd_tm" jdbcType="VARCHAR" property="sndTm" />
+    <result column="mbl_no" jdbcType="VARCHAR" property="mblNo" />
+    <result column="sms_cd" jdbcType="VARCHAR" property="smsCd" />
+    <result column="sts" jdbcType="VARCHAR" property="sts" />
+    <result column="gmt_created" jdbcType="TIMESTAMP" property="gmtCreated" />
+    <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="wang.ulane.gen.model.SmsJrn">
+    <result column="sms_sub" jdbcType="LONGVARCHAR" property="smsSub" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, jrn_no, snd_dt, snd_tm, mbl_no, sms_cd, sts, gmt_created, gmt_modified
+  </sql>
+  <sql id="Blob_Column_List">
+    sms_sub
+  </sql>
+  <select id="getByKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from t_sms_jrn
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByKey" parameterType="java.lang.Integer">
+    delete from t_sms_jrn
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="wang.ulane.gen.model.SmsJrn" useGeneratedKeys="true">
+    insert into t_sms_jrn (jrn_no, snd_dt, snd_tm, 
+      mbl_no, sms_cd, sts, 
+      gmt_created, gmt_modified, sms_sub
+      )
+    values (#{jrnNo,jdbcType=VARCHAR}, #{sndDt,jdbcType=VARCHAR}, #{sndTm,jdbcType=VARCHAR}, 
+      #{mblNo,jdbcType=VARCHAR}, #{smsCd,jdbcType=VARCHAR}, #{sts,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, #{smsSub,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="wang.ulane.gen.model.SmsJrn" useGeneratedKeys="true">
+    insert into t_sms_jrn
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="jrnNo != null">
+        jrn_no,
+      </if>
+      <if test="sndDt != null">
+        snd_dt,
+      </if>
+      <if test="sndTm != null">
+        snd_tm,
+      </if>
+      <if test="mblNo != null">
+        mbl_no,
+      </if>
+      <if test="smsCd != null">
+        sms_cd,
+      </if>
+      <if test="sts != null">
+        sts,
+      </if>
+      <if test="gmtCreated != null">
+        gmt_created,
+      </if>
+      <if test="gmtModified != null">
+        gmt_modified,
+      </if>
+      <if test="smsSub != null">
+        sms_sub,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="jrnNo != null">
+        #{jrnNo,jdbcType=VARCHAR},
+      </if>
+      <if test="sndDt != null">
+        #{sndDt,jdbcType=VARCHAR},
+      </if>
+      <if test="sndTm != null">
+        #{sndTm,jdbcType=VARCHAR},
+      </if>
+      <if test="mblNo != null">
+        #{mblNo,jdbcType=VARCHAR},
+      </if>
+      <if test="smsCd != null">
+        #{smsCd,jdbcType=VARCHAR},
+      </if>
+      <if test="sts != null">
+        #{sts,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreated != null">
+        #{gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null">
+        #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="smsSub != null">
+        #{smsSub,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByKeySelective" parameterType="wang.ulane.gen.model.SmsJrn">
+    update t_sms_jrn
+    <set>
+      <if test="jrnNo != null">
+        jrn_no = #{jrnNo,jdbcType=VARCHAR},
+      </if>
+      <if test="sndDt != null">
+        snd_dt = #{sndDt,jdbcType=VARCHAR},
+      </if>
+      <if test="sndTm != null">
+        snd_tm = #{sndTm,jdbcType=VARCHAR},
+      </if>
+      <if test="mblNo != null">
+        mbl_no = #{mblNo,jdbcType=VARCHAR},
+      </if>
+      <if test="smsCd != null">
+        sms_cd = #{smsCd,jdbcType=VARCHAR},
+      </if>
+      <if test="sts != null">
+        sts = #{sts,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreated != null">
+        gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null">
+        gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="smsSub != null">
+        sms_sub = #{smsSub,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByKeyWithBLOBs" parameterType="wang.ulane.gen.model.SmsJrn">
+    update t_sms_jrn
+    set jrn_no = #{jrnNo,jdbcType=VARCHAR},
+      snd_dt = #{sndDt,jdbcType=VARCHAR},
+      snd_tm = #{sndTm,jdbcType=VARCHAR},
+      mbl_no = #{mblNo,jdbcType=VARCHAR},
+      sms_cd = #{smsCd,jdbcType=VARCHAR},
+      sts = #{sts,jdbcType=VARCHAR},
+      gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      sms_sub = #{smsSub,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByKey" parameterType="wang.ulane.gen.model.SmsJrn">
+    update t_sms_jrn
+    set jrn_no = #{jrnNo,jdbcType=VARCHAR},
+      snd_dt = #{sndDt,jdbcType=VARCHAR},
+      snd_tm = #{sndTm,jdbcType=VARCHAR},
+      mbl_no = #{mblNo,jdbcType=VARCHAR},
+      sms_cd = #{smsCd,jdbcType=VARCHAR},
+      sts = #{sts,jdbcType=VARCHAR},
+      gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

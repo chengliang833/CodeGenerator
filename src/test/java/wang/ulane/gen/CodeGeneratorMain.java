@@ -11,7 +11,7 @@ public class CodeGeneratorMain {
     public static void main(String[] args) {
         CodeGeneratorManager cgm = new CodeGeneratorManager();
         for(TableDef td:CodeGeneratorManager.TABLES){
-        	cgm.genCodeMain(td.getTableName(), td.getModelName(), td.getMapperSufName());
+        	cgm.genCodeMain(td.getTableName(), td.getModelName(), td.getMapperSufName(), td.getGenKey());
         }
     }
 }

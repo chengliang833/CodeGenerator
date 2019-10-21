@@ -178,6 +178,8 @@ public class DefaultCommentGenerator implements CommentGenerator {
         //      addJavadocTag(field, false);
  
         field.addJavaDocLine(" */");
+//        field.addJavaDocLine("@ApiModelProperty(\""+introspectedColumn.getRemarks()+"\")");
+        
     }
  
     @Override
