@@ -194,7 +194,10 @@ public class CodeGeneratorManager extends CodeGeneratorConfig {
         PACKAGE_PATH_SERVICE = packageConvertPath(SERVICE_PACKAGE);
         PACKAGE_PATH_CONTROLLER = packageConvertPath(CONTROLLER_PACKAGE);
         PACKAGE_PATH_MAPPER = packageConvertPath(MAPPER_PACKAGE);
-
+        
+        COND_QUERY = prop.getProperty("cond.query");
+        COND_UPDATE = prop.getProperty("cond.update");
+        
         AUTHOR = "";
         String dateFormat = StringUtils.isEmpty(prop.getProperty("date-format")) ? "yyyy/MM/dd" : prop.getProperty("date-format");
         DATE = new SimpleDateFormat(dateFormat).format(new Date());
