@@ -178,6 +178,7 @@ public class DefaultCommentGenerator implements CommentGenerator {
         //      addJavadocTag(field, false);
  
         field.addJavaDocLine(" */");
+//        field.addJavaDocLine("@Column(name =\""+introspectedColumn.getActualColumnName()+"\")");
 //        field.addJavaDocLine("@ApiModelProperty(\""+introspectedColumn.getRemarks()+"\")");
         
     }

@@ -39,6 +39,10 @@ public class CodeGeneratorConfig {
 	// 生成的 Mapper 存放路径
 	protected static String PACKAGE_PATH_MAPPER;
 	
+	// 是否生成example查询修改
+	public static String COND_QUERY;
+	public static String COND_UPDATE;
+	
 	// 模板注释中 @author
 	protected static String AUTHOR;
 	// 模板注释中 @date

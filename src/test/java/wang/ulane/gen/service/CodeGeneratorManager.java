@@ -182,7 +182,16 @@ public class CodeGeneratorManager extends CodeGeneratorConfig {
         JDBC_DRIVER_CLASS_NAME = prop.getProperty("jdbc.driver.class.name");
 
         JAVA_PATH = prop.getProperty("java.path");
+        File javaPath = new File(PROJECT_PATH+JAVA_PATH);
+        if(!javaPath.exists()){
+        	javaPath.mkdirs();
+        }
         RESOURCES_PATH = prop.getProperty("resources.path");
+        File resourcesPath = new File(PROJECT_PATH+RESOURCES_PATH);
+        if(!resourcesPath.exists()){
+        	resourcesPath.mkdirs();
+        }
+        
         TEMPLATE_FILE_PATH = StringUtils.isEmpty(prop.getProperty("template.file.path"))?"":(PROJECT_PATH + prop.getProperty("template.file.path"));
 
         MODEL_PACKAGE = prop.getProperty("model.package");
@@ -194,7 +203,10 @@ public class CodeGeneratorManager extends CodeGeneratorConfig {
         PACKAGE_PATH_SERVICE = packageConvertPath(SERVICE_PACKAGE);
         PACKAGE_PATH_CONTROLLER = packageConvertPath(CONTROLLER_PACKAGE);
         PACKAGE_PATH_MAPPER = packageConvertPath(MAPPER_PACKAGE);
-
+        
+        COND_QUERY = prop.getProperty("cond.query");
+        COND_UPDATE = prop.getProperty("cond.update");
+        
         AUTHOR = "";
         String dateFormat = StringUtils.isEmpty(prop.getProperty("date-format")) ? "yyyy/MM/dd" : prop.getProperty("date-format");
         DATE = new SimpleDateFormat(dateFormat).format(new Date());
@@ -220,10 +232,14 @@ public class CodeGeneratorManager extends CodeGeneratorConfig {
         try {
             prop = new Properties();
             File file = new File(PROJECT_PATH+"/src/main/resources/generatorConfig.properties");
+            File file2 = null;
             InputStream in;
             if(file.exists()){
             	System.out.println("use custom file");
             	in = new FileInputStream(file);
+            }else if((file2 = new File(PROJECT_PATH+"/generatorConfig.properties")).exists()){
+        		System.out.println("use custom2 file");
+        		in = new FileInputStream(file2);
             }else{
             	System.out.println("use exists file");
             	in = CodeGeneratorManager.class.getClassLoader().getResourceAsStream("generatorConfig.properties");

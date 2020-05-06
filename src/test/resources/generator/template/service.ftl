@@ -4,6 +4,8 @@ import ${modelPackage}.${modelNameUpperCamel};
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 public interface ${modelNameUpperCamel}Service {
     
 	<#list serviceMethodsList as serviceMethod>

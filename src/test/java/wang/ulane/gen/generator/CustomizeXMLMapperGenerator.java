@@ -3,26 +3,35 @@ package wang.ulane.gen.generator;
 import org.mybatis.generator.api.dom.xml.XmlElement;
 import org.mybatis.generator.codegen.mybatis3.xmlmapper.XMLMapperGenerator;
 import org.mybatis.generator.codegen.mybatis3.xmlmapper.elements.AbstractXmlElementGenerator;
-import org.mybatis.generator.codegen.mybatis3.xmlmapper.elements.SimpleSelectAllElementGenerator;
+
+import wang.ulane.gen.service.CodeGeneratorConfig;
 
 public class CustomizeXMLMapperGenerator extends XMLMapperGenerator{
     public CustomizeXMLMapperGenerator() {
         super();
     }
     protected XmlElement getSqlMapElement() {
-    	introspectedTable.setSelectByPrimaryKeyStatementId("getByKey");
-    	introspectedTable.setUpdateByPrimaryKeyStatementId("updateByKey");
-    	introspectedTable.setUpdateByPrimaryKeySelectiveStatementId("updateByKeySelective");
-    	introspectedTable.setUpdateByPrimaryKeyWithBLOBsStatementId("updateByKeyWithBLOBs");
-    	introspectedTable.setDeleteByPrimaryKeyStatementId("deleteByKey");
+//    	introspectedTable.setSelectByPrimaryKeyStatementId("getByKey");
+//    	introspectedTable.setUpdateByPrimaryKeyStatementId("updateByKey");
+//    	introspectedTable.setUpdateByPrimaryKeySelectiveStatementId("updateByKeySelective");
+//    	introspectedTable.setUpdateByPrimaryKeyWithBLOBsStatementId("updateByKeyWithBLOBs");
+//    	introspectedTable.setDeleteByPrimaryKeyStatementId("deleteByKey");
         XmlElement xmlElement = super.getSqlMapElement();
-//        addSelectByConditionElement(xmlElement);
+    	if("1".equals(CodeGeneratorConfig.COND_QUERY)){
+    		initializeAndExecuteGenerator(new SelectByConditionElementGenerator(), xmlElement);
+    	}
+//    	initializeAndExecuteGenerator(new CheckByIdDateElementGenerator(), xmlElement);
+//    	initializeAndExecuteGenerator(new GetByCardNoElementGenerator(), xmlElement);
+    	
 //        addSelectAllElement(xmlElement);
 //        addSelectByPageElement(xmlElement);
 //        addCountByConditionELement(xmlElement);
 //        addDeleteByConditionELement(xmlElement);
         return xmlElement;
     }
+    
+    
+    
 //    protected void addSelectByConditionElement(XmlElement parentElement) {
 //        AbstractXmlElementGenerator elementGenerator = new SelectByConditionElementGenerator();
 //        initializeAndExecuteGenerator(elementGenerator, parentElement);

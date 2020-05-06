@@ -6,36 +6,46 @@ import org.mybatis.generator.api.dom.java.CompilationUnit;
 import org.mybatis.generator.api.dom.java.Interface;
 import org.mybatis.generator.codegen.AbstractXmlGenerator;
 import org.mybatis.generator.codegen.mybatis3.javamapper.JavaMapperGenerator;
-import org.mybatis.generator.codegen.mybatis3.javamapper.elements.AbstractJavaMapperMethodGenerator;
-import org.mybatis.generator.codegen.mybatis3.javamapper.elements.SelectAllMethodGenerator;
+
+import wang.ulane.gen.service.CodeGeneratorConfig;
 
 public class CustomizeJavaMapperGenerator extends JavaMapperGenerator {
 
     @Override
     public List<CompilationUnit> getCompilationUnits() {
-    	introspectedTable.setSelectByPrimaryKeyStatementId("getByKey");
-    	introspectedTable.setUpdateByPrimaryKeyStatementId("updateByKey");
-    	introspectedTable.setUpdateByPrimaryKeySelectiveStatementId("updateByKeySelective");
-    	introspectedTable.setUpdateByPrimaryKeyWithBLOBsStatementId("updateByKeyWithBLOBs");
-    	introspectedTable.setDeleteByPrimaryKeyStatementId("deleteByKey");
+//    	introspectedTable.setSelectByPrimaryKeyStatementId("getByKey");
+//    	introspectedTable.setUpdateByPrimaryKeyStatementId("updateByKey");
+//    	introspectedTable.setUpdateByPrimaryKeySelectiveStatementId("updateByKeySelective");
+//    	introspectedTable.setUpdateByPrimaryKeyWithBLOBsStatementId("updateByKeyWithBLOBs");
+//    	introspectedTable.setDeleteByPrimaryKeyStatementId("deleteByKey");
         List<CompilationUnit> answer = super.getCompilationUnits();
-//        for(CompilationUnit unit:answer) {
-//            if(unit.getClass().equals(Interface.class)) {
-////                addSelectByConditionMethod((Interface)unit);
-////                addSelectAllMethod((Interface)unit);
-////                addSelectByPageMethod((Interface)unit);
-////                addCountByConditionMethod((Interface)unit);
-////                addDeleteByConditionMethod((Interface)unit);
-//            }
-//        }
+        for(CompilationUnit unit:answer) {
+            if(unit.getClass().equals(Interface.class)) {
+            	if("1".equals(CodeGeneratorConfig.COND_QUERY)){
+            		initializeAndExecuteGenerator(new SelectByConditionMethodGenerator(), (Interface)unit);
+            	}
+//            	initializeAndExecuteGenerator(new CheckByIdDateMethodGenerator(), (Interface)unit);
+//            	initializeAndExecuteGenerator(new GetByCardNoMethodGenerator(), (Interface)unit);
+            	
+            	
+//                addSelectAllMethod((Interface)unit);
+//                addSelectByPageMethod((Interface)unit);
+//                addCountByConditionMethod((Interface)unit);
+//                addDeleteByConditionMethod((Interface)unit);
+            }
+        }
         return answer;
     }
+    
+    
+    
+    
     
 //    protected void addSelectByConditionMethod(Interface interfaze) {
 //        AbstractJavaMapperMethodGenerator methodGenerator = new SelectByConditionMethodGenerator();
 //        initializeAndExecuteGenerator(methodGenerator, interfaze);
 //    }
-//    
+    
 //    protected void addSelectAllMethod(Interface interfaze) {
 //        AbstractJavaMapperMethodGenerator methodGenerator = new SelectAllMethodGenerator();
 //        initializeAndExecuteGenerator(methodGenerator, interfaze);
