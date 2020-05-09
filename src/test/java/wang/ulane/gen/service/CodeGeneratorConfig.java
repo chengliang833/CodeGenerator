@@ -2,6 +2,7 @@ package wang.ulane.gen.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import wang.ulane.gen.main.TableDef;
 
@@ -39,9 +40,15 @@ public class CodeGeneratorConfig {
 	// 生成的 Mapper 存放路径
 	protected static String PACKAGE_PATH_MAPPER;
 	
-	// 是否生成example查询修改
-	public static String COND_QUERY;
-	public static String COND_UPDATE;
+	// 是否生成自定义方法
+	public static Map<String, Boolean> CUSTOM_FUNC;
+	
+	//简化primarykey方法名
+	public static boolean SIMPL_FUNC_NAME = false;
+	
+	//生成basecolumnlist
+	public static boolean GEN_COLUMN_LIST_SQL = false;
+	
 	
 	// 模板注释中 @author
 	protected static String AUTHOR;

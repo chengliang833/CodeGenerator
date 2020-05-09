@@ -453,7 +453,7 @@ public abstract class BaseRules implements Rules {
         }
         
         return generateSelectByPrimaryKey()
-                || generateSelectByExampleWithoutBLOBs() || "1".equals(CodeGeneratorConfig.COND_QUERY);
+                || generateSelectByExampleWithoutBLOBs() || CodeGeneratorConfig.GEN_COLUMN_LIST_SQL;
     }
 
     @Override
@@ -464,7 +464,7 @@ public abstract class BaseRules implements Rules {
         
         return introspectedTable.hasBLOBColumns()
                 && (tableConfiguration.isSelectByExampleStatementEnabled() || tableConfiguration
-                        .isSelectByPrimaryKeyStatementEnabled() ||"1".equals(CodeGeneratorConfig.COND_QUERY));
+                        .isSelectByPrimaryKeyStatementEnabled() || CodeGeneratorConfig.GEN_COLUMN_LIST_SQL);
     }
 
     @Override

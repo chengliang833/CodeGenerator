@@ -1,5 +1,6 @@
 package wang.ulane.gen.generator;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.mybatis.generator.api.dom.java.CompilationUnit;
@@ -10,61 +11,40 @@ import org.mybatis.generator.codegen.mybatis3.javamapper.JavaMapperGenerator;
 import wang.ulane.gen.service.CodeGeneratorConfig;
 
 public class CustomizeJavaMapperGenerator extends JavaMapperGenerator {
-
+	
+	public static List<String> GenColListFunc = Arrays.asList("checkByIdDate","getByCardNo","selectByCondition");
+	
     @Override
     public List<CompilationUnit> getCompilationUnits() {
-//    	introspectedTable.setSelectByPrimaryKeyStatementId("getByKey");
-//    	introspectedTable.setUpdateByPrimaryKeyStatementId("updateByKey");
-//    	introspectedTable.setUpdateByPrimaryKeySelectiveStatementId("updateByKeySelective");
-//    	introspectedTable.setUpdateByPrimaryKeyWithBLOBsStatementId("updateByKeyWithBLOBs");
-//    	introspectedTable.setDeleteByPrimaryKeyStatementId("deleteByKey");
+    	if(CodeGeneratorConfig.SIMPL_FUNC_NAME){
+    		introspectedTable.setSelectByPrimaryKeyStatementId("getByKey");
+    		introspectedTable.setUpdateByPrimaryKeyStatementId("updateByKey");
+    		introspectedTable.setUpdateByPrimaryKeySelectiveStatementId("updateByKeySelective");
+    		introspectedTable.setUpdateByPrimaryKeyWithBLOBsStatementId("updateByKeyWithBLOBs");
+    		introspectedTable.setDeleteByPrimaryKeyStatementId("deleteByKey");
+    	}
         List<CompilationUnit> answer = super.getCompilationUnits();
         for(CompilationUnit unit:answer) {
             if(unit.getClass().equals(Interface.class)) {
-            	if("1".equals(CodeGeneratorConfig.COND_QUERY)){
+            	if(CodeGeneratorConfig.CUSTOM_FUNC.getOrDefault("checkByIdDate", false)){
+            		initializeAndExecuteGenerator(new CheckByIdDateMethodGenerator(), (Interface)unit);
+            	}
+            	if(CodeGeneratorConfig.CUSTOM_FUNC.getOrDefault("countByCondition", false)){
+            		initializeAndExecuteGenerator(new CountByConditionMethodGenerator(), (Interface)unit);
+            	}
+            	if(CodeGeneratorConfig.CUSTOM_FUNC.getOrDefault("deleteByCondition", false)){
+            		initializeAndExecuteGenerator(new DeleteByConditionMethodGenerator(), (Interface)unit);
+            	}
+            	if(CodeGeneratorConfig.CUSTOM_FUNC.getOrDefault("getByCardNo", false)){
+            		initializeAndExecuteGenerator(new GetByCardNoMethodGenerator(), (Interface)unit);
+            	}
+            	if(CodeGeneratorConfig.CUSTOM_FUNC.getOrDefault("selectByCondition", false)){
             		initializeAndExecuteGenerator(new SelectByConditionMethodGenerator(), (Interface)unit);
             	}
-//            	initializeAndExecuteGenerator(new CheckByIdDateMethodGenerator(), (Interface)unit);
-//            	initializeAndExecuteGenerator(new GetByCardNoMethodGenerator(), (Interface)unit);
-            	
-            	
-//                addSelectAllMethod((Interface)unit);
-//                addSelectByPageMethod((Interface)unit);
-//                addCountByConditionMethod((Interface)unit);
-//                addDeleteByConditionMethod((Interface)unit);
             }
         }
         return answer;
     }
-    
-    
-    
-    
-    
-//    protected void addSelectByConditionMethod(Interface interfaze) {
-//        AbstractJavaMapperMethodGenerator methodGenerator = new SelectByConditionMethodGenerator();
-//        initializeAndExecuteGenerator(methodGenerator, interfaze);
-//    }
-    
-//    protected void addSelectAllMethod(Interface interfaze) {
-//        AbstractJavaMapperMethodGenerator methodGenerator = new SelectAllMethodGenerator();
-//        initializeAndExecuteGenerator(methodGenerator, interfaze);
-//    }
-//    
-//    protected void addSelectByPageMethod(Interface interfaze) {
-//        AbstractJavaMapperMethodGenerator methodGenerator = new SelectByPageMethodGenerator();
-//        initializeAndExecuteGenerator(methodGenerator, interfaze);
-//    }
-//    
-//    protected void addCountByConditionMethod(Interface interfaze) {
-//        AbstractJavaMapperMethodGenerator methodGenerator = new CountByConditionMethodGenerator();
-//        initializeAndExecuteGenerator(methodGenerator, interfaze);
-//    }
-//    
-//    protected void addDeleteByConditionMethod(Interface interfaze) {
-//        AbstractJavaMapperMethodGenerator methodGenerator = new DeleteByConditionMethodGenerator();
-//        initializeAndExecuteGenerator(methodGenerator, interfaze);
-//    }
     
     @Override
     public AbstractXmlGenerator getMatchedXMLGenerator(){

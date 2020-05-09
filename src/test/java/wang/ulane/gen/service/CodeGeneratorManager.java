@@ -8,6 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
@@ -22,10 +23,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.alibaba.druid.util.StringUtils;
+import com.alibaba.fastjson.JSON;
 
 import freemarker.cache.ClassTemplateLoader;
 import freemarker.template.Configuration;
 import freemarker.template.TemplateExceptionHandler;
+import wang.ulane.gen.generator.CustomizeJavaMapperGenerator;
 import wang.ulane.gen.main.TableDef;
 import wang.ulane.gen.service.impl.ModelAndMapperGenerator;
 import wang.ulane.gen.service.impl.ServiceGenerator;
@@ -146,11 +149,12 @@ public class CodeGeneratorManager extends CodeGeneratorConfig {
         Configuration cfg = null;
         try {
             cfg = new Configuration(Configuration.VERSION_2_3_23);
-            if(StringUtils.isEmpty(TEMPLATE_FILE_PATH)){
+            File file = null;
+            if(!StringUtils.isEmpty(TEMPLATE_FILE_PATH) && (file = new File(TEMPLATE_FILE_PATH)).exists()){
+            	cfg.setDirectoryForTemplateLoading(file);
+            }else{
             	cfg.setClassForTemplateLoading(this.getClass(), "/generator/template");
             	cfg.setTemplateLoader(new ClassTemplateLoader(this.getClass(), "/generator/template"));
-            }else{
-            	cfg.setDirectoryForTemplateLoading(new File(TEMPLATE_FILE_PATH));
             }
             cfg.setDefaultEncoding("UTF-8");
             cfg.setTemplateExceptionHandler(TemplateExceptionHandler.IGNORE_HANDLER);
@@ -198,14 +202,21 @@ public class CodeGeneratorManager extends CodeGeneratorConfig {
         MAPPER_PACKAGE = prop.getProperty("mapper.package");
         MAPPERXML_PACKAGE = prop.getProperty("mapperxml.package");
         SERVICE_PACKAGE = prop.getProperty("service.package");
-        CONTROLLER_PACKAGE = prop.getProperty("controller.package");
+//        CONTROLLER_PACKAGE = prop.getProperty("controller.package");
 
         PACKAGE_PATH_SERVICE = packageConvertPath(SERVICE_PACKAGE);
-        PACKAGE_PATH_CONTROLLER = packageConvertPath(CONTROLLER_PACKAGE);
+//        PACKAGE_PATH_CONTROLLER = packageConvertPath(CONTROLLER_PACKAGE);
         PACKAGE_PATH_MAPPER = packageConvertPath(MAPPER_PACKAGE);
         
-        COND_QUERY = prop.getProperty("cond.query");
-        COND_UPDATE = prop.getProperty("cond.update");
+        SIMPL_FUNC_NAME = Boolean.getBoolean(prop.getProperty("custom.simplifyName", "false"));
+        
+        CUSTOM_FUNC = JSON.parseObject(prop.getProperty("custom.func")).toJavaObject(Map.class);
+        
+        for(String func:CustomizeJavaMapperGenerator.GenColListFunc){
+        	if(CUSTOM_FUNC.getOrDefault(func, false)){
+        		GEN_COLUMN_LIST_SQL = true;
+        	}
+        }
         
         AUTHOR = "";
         String dateFormat = StringUtils.isEmpty(prop.getProperty("date-format")) ? "yyyy/MM/dd" : prop.getProperty("date-format");
