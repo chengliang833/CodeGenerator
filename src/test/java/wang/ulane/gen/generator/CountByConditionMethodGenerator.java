@@ -1,8 +1,3 @@
-/*
- * TOP SECRET Copyright 2006-2015 Transsion.com All right reserved. This software is the confidential and proprietary
- * information of Transsion.com ("Confidential Information"). You shall not disclose such Confidential Information and
- * shall use it only in accordance with the terms of the license agreement you entered into with Transsion.com.
- */
 package wang.ulane.gen.generator;
 
 import java.util.Set;
@@ -15,15 +10,6 @@ import org.mybatis.generator.api.dom.java.Method;
 import org.mybatis.generator.api.dom.java.Parameter;
 import org.mybatis.generator.codegen.mybatis3.javamapper.elements.AbstractJavaMapperMethodGenerator;
 
-/**
- * ClassName:SelectByPageMethodGenerator <br/>
- * Date: 2018年10月22日 下午2:58:28 <br/>
- * 
- * @author fenglibin1982@163.com
- * @Blog http://blog.csdn.net/fenglibing
- * @version
- * @see
- */
 public class CountByConditionMethodGenerator extends AbstractJavaMapperMethodGenerator {
 
     public CountByConditionMethodGenerator(){
