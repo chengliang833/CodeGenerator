@@ -3,6 +3,8 @@ package wang.ulane.gen.util;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.mybatis.generator.api.IntrospectedColumn;
+
 public class MethodUtil {
 
     /**
@@ -200,4 +202,17 @@ public class MethodUtil {
         }
         return str.toString();
     }
+    
+    public static String getListParameterClause(IntrospectedColumn introspectedColumn){
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("#{item."); //$NON-NLS-1$
+        sb.append(introspectedColumn.getJavaProperty());
+        sb.append(",jdbcType="); //$NON-NLS-1$
+        sb.append(introspectedColumn.getJdbcTypeName());
+        sb.append("}");
+        
+        return sb.toString();
+    }
+    
 }

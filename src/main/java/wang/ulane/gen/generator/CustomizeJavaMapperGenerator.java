@@ -26,6 +26,9 @@ public class CustomizeJavaMapperGenerator extends JavaMapperGenerator {
         List<CompilationUnit> answer = super.getCompilationUnits();
         for(CompilationUnit unit:answer) {
             if(unit.getClass().equals(Interface.class)) {
+            	if(CodeGeneratorConfig.CUSTOM_FUNC.getOrDefault("batchInsert", false)){
+            		initializeAndExecuteGenerator(new BatchInsertMethodGenerator(), (Interface)unit);
+            	}
             	if(CodeGeneratorConfig.CUSTOM_FUNC.getOrDefault("checkByIdDate", false)){
             		initializeAndExecuteGenerator(new CheckByIdDateMethodGenerator(), (Interface)unit);
             	}

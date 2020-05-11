@@ -9,15 +9,6 @@ import org.mybatis.generator.codegen.mybatis3.ListUtilities;
 import org.mybatis.generator.codegen.mybatis3.MyBatis3FormattingUtilities;
 import org.mybatis.generator.codegen.mybatis3.xmlmapper.elements.AbstractXmlElementGenerator;
 
-
-/** 
- * ClassName:SimpleSelectByPageElementGenerator <br/> 
- * Date:     2018年10月22日 下午4:51:03 <br/> 
- * @author   fenglibin1982@163.com
- * @Blog     http://blog.csdn.net/fenglibing
- * @version  
- * @see       
- */
 public class DeleteByConditionElementGenerator extends AbstractXmlElementGenerator {
 
     @Override
