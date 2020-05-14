@@ -46,6 +46,9 @@ public class CodeGeneratorConfig {
 	//简化primarykey方法名
 	public static boolean SIMPL_FUNC_NAME = false;
 	
+	//生成swagger注解注释
+	public static boolean MODEL_SWAGGER_ANNOTATION = false;
+	
 	//生成basecolumnlist
 	public static boolean GEN_COLUMN_LIST_SQL = false;
 	

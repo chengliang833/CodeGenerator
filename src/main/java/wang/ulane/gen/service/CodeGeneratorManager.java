@@ -208,7 +208,9 @@ public class CodeGeneratorManager extends CodeGeneratorConfig {
 //        PACKAGE_PATH_CONTROLLER = packageConvertPath(CONTROLLER_PACKAGE);
         PACKAGE_PATH_MAPPER = packageConvertPath(MAPPER_PACKAGE);
         
-        SIMPL_FUNC_NAME = Boolean.getBoolean(prop.getProperty("custom.simplifyName", "false"));
+        SIMPL_FUNC_NAME = Boolean.valueOf(prop.getProperty("custom.simplifyName", "false"));
+        
+        MODEL_SWAGGER_ANNOTATION = Boolean.valueOf(prop.getProperty("custom.modelSwaggerAnnotation", "false"));
         
         CUSTOM_FUNC = JSON.parseObject(prop.getProperty("custom.func","{}")).toJavaObject(Map.class);
         
