@@ -210,7 +210,7 @@ public class CodeGeneratorManager extends CodeGeneratorConfig {
         
         SIMPL_FUNC_NAME = Boolean.getBoolean(prop.getProperty("custom.simplifyName", "false"));
         
-        CUSTOM_FUNC = JSON.parseObject(prop.getProperty("custom.func")).toJavaObject(Map.class);
+        CUSTOM_FUNC = JSON.parseObject(prop.getProperty("custom.func","{}")).toJavaObject(Map.class);
         
         for(String func:CustomizeJavaMapperGenerator.GenColListFunc){
         	if(CUSTOM_FUNC.getOrDefault(func, false)){
