@@ -230,7 +230,7 @@ public abstract class BaseRules implements Rules {
         }
 
         boolean rc = tableConfiguration.isSelectByExampleStatementEnabled()
-                || tableConfiguration.isSelectByPrimaryKeyStatementEnabled();
+                || tableConfiguration.isSelectByPrimaryKeyStatementEnabled() || CodeGeneratorConfig.GEN_COLUMN_LIST_SQL;
 
         return rc;
     }
@@ -251,7 +251,7 @@ public abstract class BaseRules implements Rules {
                 rc = true;
             } else {
                 rc = tableConfiguration.isSelectByExampleStatementEnabled()
-                        || tableConfiguration.isSelectByPrimaryKeyStatementEnabled();
+                        || tableConfiguration.isSelectByPrimaryKeyStatementEnabled() || CodeGeneratorConfig.GEN_COLUMN_LIST_SQL;
             }
         } else {
             rc = false;

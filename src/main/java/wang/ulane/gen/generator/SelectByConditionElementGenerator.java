@@ -18,12 +18,25 @@ public class SelectByConditionElementGenerator extends AbstractXmlElementGenerat
         answer.addAttribute(new Attribute("id", "selectByCondition")); //$NON-NLS-1$
         FullyQualifiedJavaType parameterType = introspectedTable.getRules().calculateAllFieldsClass();
         answer.addAttribute(new Attribute("parameterType", parameterType.getFullyQualifiedName()));
-        answer.addAttribute(new Attribute("resultMap", //$NON-NLS-1$
-                                          introspectedTable.getBaseResultMapId()));
+        
+//        answer.addAttribute(new Attribute("resultMap", //$NON-NLS-1$
+//                                          introspectedTable.getBaseResultMapId()));
+        if (introspectedTable.getRules().generateResultMapWithBLOBs()) {
+            answer.addAttribute(new Attribute("resultMap", //$NON-NLS-1$
+                    introspectedTable.getResultMapWithBLOBsId()));
+        } else {
+            answer.addAttribute(new Attribute("resultMap", //$NON-NLS-1$
+                    introspectedTable.getBaseResultMapId()));
+        }
+        
         context.getCommentGenerator().addComment(answer);
 
         answer.addElement(new TextElement("select"));
         answer.addElement(getBaseColumnListElement());
+        if (introspectedTable.hasBLOBColumns()) {
+            answer.addElement(new TextElement(",")); //$NON-NLS-1$
+            answer.addElement(getBlobColumnListElement());
+        }
 
         answer.addElement(new TextElement("from"));
         answer.addElement(new TextElement(introspectedTable.getAliasedFullyQualifiedTableNameAtRuntime()));
