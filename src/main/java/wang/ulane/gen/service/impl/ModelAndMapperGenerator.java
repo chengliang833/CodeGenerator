@@ -22,6 +22,7 @@ import org.mybatis.generator.internal.DefaultShellCallback;
 
 import wang.ulane.gen.generator.CustomizeJavaMapperGenerator;
 import wang.ulane.gen.service.CodeGenerator;
+import wang.ulane.gen.service.CodeGeneratorConfig;
 import wang.ulane.gen.service.CodeGeneratorManager;
 import wang.ulane.gen.util.StringUtils;
 
@@ -141,15 +142,27 @@ public class ModelAndMapperGenerator extends CodeGeneratorManager implements Cod
             tableConfiguration.setTableName(tableName);
             tableConfiguration.setDomainObjectName(modelName);
             tableConfiguration.setMapperName(modelName+this.sufName);
-//            tableConfiguration.setGeneratedKey(new GeneratedKey("id", "Mysql", true, null));
+            
+            if(!CodeGeneratorConfig.GEN_DEFAULT.getOrDefault("select", true)){
+            	tableConfiguration.setSelectByPrimaryKeyStatementEnabled(false);
+            }
+            if(!CodeGeneratorConfig.GEN_DEFAULT.getOrDefault("insert", true)){
+            	tableConfiguration.setInsertStatementEnabled(false);
+            }
+            if(!CodeGeneratorConfig.GEN_DEFAULT.getOrDefault("update", true)){
+            	tableConfiguration.setUpdateByPrimaryKeyStatementEnabled(false);
+            }
+            if(!CodeGeneratorConfig.GEN_DEFAULT.getOrDefault("delete", true)){
+            	tableConfiguration.setDeleteByPrimaryKeyStatementEnabled(false);
+            }
+            
             tableConfiguration.setCountByExampleStatementEnabled(false);
             // org.mybatis.generator.codegen.mybatis3.javamapper.JavaMapperGenerator
             tableConfiguration.setDeleteByExampleStatementEnabled(false);
             tableConfiguration.setSelectByExampleStatementEnabled(false);
             tableConfiguration.setUpdateByExampleStatementEnabled(false);
             if(genKey != null){
-            	GeneratedKey generatedKey = new GeneratedKey(genKey, "JDBC", true, null);
-            	tableConfiguration.setGeneratedKey(generatedKey);
+            	tableConfiguration.setGeneratedKey(new GeneratedKey(genKey, "JDBC", true, null));
             }
             
             context.addTableConfiguration(tableConfiguration);

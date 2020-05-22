@@ -42,6 +42,7 @@ public class CodeGeneratorConfig {
 	
 	// 是否生成自定义方法
 	public static Map<String, Boolean> CUSTOM_FUNC;
+	public static boolean CUSTOM_FUNC_GEN = false;
 	
 	//简化primarykey方法名
 	public static boolean SIMPL_FUNC_NAME = false;
@@ -52,6 +53,8 @@ public class CodeGeneratorConfig {
 	//生成basecolumnlist
 	public static boolean GEN_COLUMN_LIST_SQL = false;
 	
+	//生成默认的增删改查方法
+	public static Map<String, Boolean> GEN_DEFAULT;
 	
 	// 模板注释中 @author
 	protected static String AUTHOR;

@@ -214,9 +214,15 @@ public class CodeGeneratorManager extends CodeGeneratorConfig {
         
         CUSTOM_FUNC = JSON.parseObject(prop.getProperty("custom.func","{}")).toJavaObject(Map.class);
         
-        for(String func:CustomizeJavaMapperGenerator.GenColListFunc){
+        GEN_DEFAULT = JSON.parseObject(prop.getProperty("custom.genDefault","{}")).toJavaObject(Map.class);
+        
+        for(String func:CUSTOM_FUNC.keySet()){
         	if(CUSTOM_FUNC.getOrDefault(func, false)){
-        		GEN_COLUMN_LIST_SQL = true;
+        		CUSTOM_FUNC_GEN = true;
+        		if(CustomizeJavaMapperGenerator.GenColListFunc.contains(func)){
+        			GEN_COLUMN_LIST_SQL = true;
+        			break;
+        		}
         	}
         }
         
