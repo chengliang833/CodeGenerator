@@ -55,6 +55,7 @@ public class CodeGeneratorConfig {
 	
 	//生成实际的字段名(如带下划线)
 	public static boolean USE_ACTUAL_COLUMN_NAMES = false;
+	public static String USE_ACTUAL_COLUMN_NAMES_REGEX;
 	
 	//生成默认的增删改查方法
 	public static Map<String, Boolean> GEN_DEFAULT;
