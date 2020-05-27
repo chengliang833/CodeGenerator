@@ -53,6 +53,9 @@ public class CodeGeneratorConfig {
 	//生成basecolumnlist
 	public static boolean GEN_COLUMN_LIST_SQL = false;
 	
+	//生成实际的字段名(如带下划线)
+	public static boolean USE_ACTUAL_COLUMN_NAMES = false;
+	
 	//生成默认的增删改查方法
 	public static Map<String, Boolean> GEN_DEFAULT;
 	

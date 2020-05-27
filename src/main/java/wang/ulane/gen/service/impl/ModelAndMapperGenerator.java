@@ -155,6 +155,8 @@ public class ModelAndMapperGenerator extends CodeGeneratorManager implements Cod
             if(!CodeGeneratorConfig.GEN_DEFAULT.getOrDefault("delete", true)){
             	tableConfiguration.setDeleteByPrimaryKeyStatementEnabled(false);
             }
+            //使用实际字段名 false时使用驼峰  mapUnderscoreToCamelCase
+            tableConfiguration.addProperty("useActualColumnNames", "true");
             
             tableConfiguration.setCountByExampleStatementEnabled(false);
             // org.mybatis.generator.codegen.mybatis3.javamapper.JavaMapperGenerator

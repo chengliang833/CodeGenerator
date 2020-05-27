@@ -210,6 +210,8 @@ public class CodeGeneratorManager extends CodeGeneratorConfig {
         
         SIMPL_FUNC_NAME = Boolean.valueOf(prop.getProperty("custom.simplifyName", "false"));
         
+        USE_ACTUAL_COLUMN_NAMES = Boolean.valueOf(prop.getProperty("custom.useActualColumnNames", "false"));
+        
         MODEL_SWAGGER_ANNOTATION = Boolean.valueOf(prop.getProperty("custom.modelSwaggerAnnotation", "false"));
         
         CUSTOM_FUNC = JSON.parseObject(prop.getProperty("custom.func","{}")).toJavaObject(Map.class);
