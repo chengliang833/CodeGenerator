@@ -30,11 +30,15 @@ public class CodeGeneratorConfig {
 	protected static String MAPPERXML_PACKAGE;
 	// 项目 Service 所在包
 	protected static String SERVICE_PACKAGE;
+	// 项目 Service 所在包
+	protected static String SERVICE_PACKAGE_IMPL;
 	// 项目 Controller 所在包
 	protected static String CONTROLLER_PACKAGE;
 	
 	// 生成的 Service 存放路径
 	protected static String PACKAGE_PATH_SERVICE;
+	// 生成的 Serviceimpl 存放路径
+	protected static String PACKAGE_PATH_SERVICE_IMPL;
 	// 生成的 Controller 存放路径
 	protected static String PACKAGE_PATH_CONTROLLER;
 	// 生成的 Mapper 存放路径

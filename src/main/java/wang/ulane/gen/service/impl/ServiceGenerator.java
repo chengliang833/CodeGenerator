@@ -65,7 +65,7 @@ public class ServiceGenerator extends CodeGeneratorManager implements CodeGenera
             data.put("impl", "impl");
 
             // 创建 ServiceImpl 接口
-            File serviceImplFile = new File(PROJECT_PATH + JAVA_PATH + PACKAGE_PATH_SERVICE + customMapping + "impl" + customMapping
+            File serviceImplFile = new File(PROJECT_PATH + JAVA_PATH + PACKAGE_PATH_SERVICE_IMPL + customMapping
                                         + modelNameUpperCamel + "ServiceImpl.java");
             // 查看父级目录是否存在, 不存在则创建
             if (!serviceImplFile.getParentFile().exists()) {

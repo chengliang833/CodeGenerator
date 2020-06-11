@@ -1,4 +1,4 @@
-package ${servicePackage}.${impl};
+package ${serviceimplPackage};
 
 import ${modelPackage}.${modelNameUpperCamel};
 import ${mapperPackage}.${modelNameUpperCamel}${sufName};

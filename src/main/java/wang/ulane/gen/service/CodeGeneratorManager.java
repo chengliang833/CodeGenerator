@@ -202,9 +202,11 @@ public class CodeGeneratorManager extends CodeGeneratorConfig {
         MAPPER_PACKAGE = prop.getProperty("mapper.package");
         MAPPERXML_PACKAGE = prop.getProperty("mapperxml.package");
         SERVICE_PACKAGE = prop.getProperty("service.package");
+        SERVICE_PACKAGE_IMPL = prop.getProperty("serviceimpl.package", SERVICE_PACKAGE+".impl");
 //        CONTROLLER_PACKAGE = prop.getProperty("controller.package");
 
         PACKAGE_PATH_SERVICE = packageConvertPath(SERVICE_PACKAGE);
+        PACKAGE_PATH_SERVICE_IMPL = packageConvertPath(SERVICE_PACKAGE_IMPL);
 //        PACKAGE_PATH_CONTROLLER = packageConvertPath(CONTROLLER_PACKAGE);
         PACKAGE_PATH_MAPPER = packageConvertPath(MAPPER_PACKAGE);
         
