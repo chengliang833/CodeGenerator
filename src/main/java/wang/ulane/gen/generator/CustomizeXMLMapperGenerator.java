@@ -27,6 +27,9 @@ public class CustomizeXMLMapperGenerator extends XMLMapperGenerator{
     	if(CodeGeneratorConfig.CUSTOM_FUNC.getOrDefault("batchInsert", false)){
     		initializeAndExecuteGenerator(new BatchInsertElementGenerator(), xmlElement);
     	}
+    	if(CodeGeneratorConfig.CUSTOM_FUNC.getOrDefault("insertOrUpdate", false)){
+    		initializeAndExecuteGenerator(new InsertOrUpdateElementGenerator(), xmlElement);
+    	}
     	if(CodeGeneratorConfig.CUSTOM_FUNC.getOrDefault("checkByIdDate", false)){
     		initializeAndExecuteGenerator(new CheckByIdDateElementGenerator(), xmlElement);
     	}

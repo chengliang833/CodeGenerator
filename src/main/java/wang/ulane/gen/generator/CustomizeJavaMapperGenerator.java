@@ -29,6 +29,9 @@ public class CustomizeJavaMapperGenerator extends JavaMapperGenerator {
             	if(CodeGeneratorConfig.CUSTOM_FUNC.getOrDefault("batchInsert", false)){
             		initializeAndExecuteGenerator(new BatchInsertMethodGenerator(), (Interface)unit);
             	}
+            	if(CodeGeneratorConfig.CUSTOM_FUNC.getOrDefault("insertOrUpdate", false)){
+            		initializeAndExecuteGenerator(new InsertOrUpdateMethodGenerator(), (Interface)unit);
+            	}
             	if(CodeGeneratorConfig.CUSTOM_FUNC.getOrDefault("checkByIdDate", false)){
             		initializeAndExecuteGenerator(new CheckByIdDateMethodGenerator(), (Interface)unit);
             	}
