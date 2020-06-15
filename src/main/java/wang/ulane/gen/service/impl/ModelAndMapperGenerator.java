@@ -171,7 +171,6 @@ public class ModelAndMapperGenerator extends CodeGeneratorManager implements Cod
             	tableConfiguration.setGeneratedKey(new GeneratedKey(genKey, "JDBC", true, null));
             }
             if(rootClass != null){
-            	//com.hunan.familyDoctorDubboServer.domain.BaseEntity
             	tableConfiguration.addProperty("rootClass", rootClass);
             }
             
