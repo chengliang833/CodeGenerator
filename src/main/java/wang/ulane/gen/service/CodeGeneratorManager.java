@@ -249,7 +249,11 @@ public class CodeGeneratorManager extends CodeGeneratorConfig {
         	String key = p.toString();
         	String[] values = prop.getProperty(p.toString()).split(",");
         	if(key.startsWith("table_")){
-        		TABLES.add(new TableDef(key.substring(6), values[0], values.length>1?values[1]:null, values.length>2?values[2]:null, values.length>3?values[3]:null));
+        		TABLES.add(new TableDef(key.substring(6), 
+        								values[0], 
+										values.length>1?values[1]:null, 
+										values.length>2?("null".equals(values[2])?null:values[2]):null, 
+										values.length>3?values[3]:null));
         	}
         }
         
