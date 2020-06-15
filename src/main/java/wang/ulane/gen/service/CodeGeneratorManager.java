@@ -120,8 +120,13 @@ public class CodeGeneratorManager extends CodeGeneratorConfig {
 //    public void genCodeMain(String tableName, String modelName, String mapperSuf) {
 //        genCodeByTableName(tableName, modelName, mapperSuf, null);
 //    }
-    public void genCodeMain(String tableName, String modelName, String mapperSuf, String genKey) {
-    	genCodeByTableName(tableName, modelName, mapperSuf, genKey);
+//    public void genCodeMain(String tableName, String modelName, String mapperSuf, String genKey) {
+//    	genCodeByTableName(tableName, modelName, mapperSuf, genKey);
+//    }
+    public void genCodeMain() {
+        for(TableDef td:TABLES){
+        	genCodeByTableName(td);
+        }
     }
 
     /**
@@ -133,10 +138,14 @@ public class CodeGeneratorManager extends CodeGeneratorConfig {
      * @param mapperSuf mapper文件后缀
      * @param genKey 自增key自动返回
      */
-    private void genCodeByTableName(String tableName, String modelName, String mapperSuf, String genKey) {
-        new ModelAndMapperGenerator(mapperSuf, genKey).genCode(tableName, modelName);
-        new ServiceGenerator(mapperSuf).genCode(tableName, modelName);
-//        new ControllerGenerator(mapperSuf).genCode(tableName, modelName);
+//    private void genCodeByTableName(String tableName, String modelName, String mapperSuf, String genKey) {
+//        new ModelAndMapperGenerator(mapperSuf, genKey).genCode(tableName, modelName);
+//        new ServiceGenerator(mapperSuf).genCode(tableName, modelName);
+////        new ControllerGenerator(mapperSuf).genCode(tableName, modelName);
+//    }
+    private void genCodeByTableName(TableDef td) {
+        new ModelAndMapperGenerator(td.getMapperSufName(), td.getGenKey(), td.getRootClass()).genCode(td.getTableName(), td.getModelName());
+        new ServiceGenerator(td.getMapperSufName()).genCode(td.getTableName(), td.getModelName());
     }
 
     /**
@@ -240,7 +249,7 @@ public class CodeGeneratorManager extends CodeGeneratorConfig {
         	String key = p.toString();
         	String[] values = prop.getProperty(p.toString()).split(",");
         	if(key.startsWith("table_")){
-        		TABLES.add(new TableDef(key.substring(6), values[0], values.length>1?values[1]:null, values.length>2?values[2]:null));
+        		TABLES.add(new TableDef(key.substring(6), values[0], values.length>1?values[1]:null, values.length>2?values[2]:null, values.length>3?values[3]:null));
         	}
         }
         

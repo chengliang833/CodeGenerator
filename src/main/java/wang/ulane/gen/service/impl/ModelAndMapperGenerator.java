@@ -30,17 +30,19 @@ public class ModelAndMapperGenerator extends CodeGeneratorManager implements Cod
 	
 	private String sufName = "Mapper";
 	private String genKey = null;
+	private String rootClass = null;
 	
     public ModelAndMapperGenerator() {
 		super();
 	}
     
-	public ModelAndMapperGenerator(String sufName, String genKey) {
+	public ModelAndMapperGenerator(String sufName, String genKey, String rootClass) {
 		super();
 		if(sufName != null){
 			this.sufName = sufName;
 		}
 		this.genKey = genKey;
+		this.rootClass = rootClass;
 	}
 
 	@Override
@@ -167,6 +169,10 @@ public class ModelAndMapperGenerator extends CodeGeneratorManager implements Cod
             tableConfiguration.setUpdateByExampleStatementEnabled(false);
             if(genKey != null){
             	tableConfiguration.setGeneratedKey(new GeneratedKey(genKey, "JDBC", true, null));
+            }
+            if(rootClass != null){
+            	//com.hunan.familyDoctorDubboServer.domain.BaseEntity
+            	tableConfiguration.addProperty("rootClass", rootClass);
             }
             
             context.addTableConfiguration(tableConfiguration);

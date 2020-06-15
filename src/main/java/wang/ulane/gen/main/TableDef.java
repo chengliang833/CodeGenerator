@@ -5,14 +5,16 @@ public class TableDef {
 	private String modelName;
 	private String mapperSufName = "Mapper";
 	private String genKey;
+	private String rootClass;
 	
-	public TableDef(String tableName, String modelName, String mapperSufName, String genKey) {
+	public TableDef(String tableName, String modelName, String mapperSufName, String genKey, String rootClass) {
 		this.tableName = tableName;
 		this.modelName = modelName;
 		if(mapperSufName != null){
 			this.mapperSufName = mapperSufName;
 		}
 		this.genKey = genKey;
+		this.rootClass = rootClass;
 	}
 	
 	public String getTableName() {
@@ -38,6 +40,12 @@ public class TableDef {
 	}
 	public void setGenKey(String genKey) {
 		this.genKey = genKey;
+	}
+	public String getRootClass() {
+		return rootClass;
+	}
+	public void setRootClass(String rootClass) {
+		this.rootClass = rootClass;
 	}
 	
 	
