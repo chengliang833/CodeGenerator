@@ -45,6 +45,9 @@ public class CustomizeXMLMapperGenerator extends XMLMapperGenerator{
     	if(CodeGeneratorConfig.CUSTOM_FUNC.getOrDefault("selectByCondition", false)){
     		initializeAndExecuteGenerator(new SelectByConditionElementGenerator(), xmlElement);
     	}
+    	if(CodeGeneratorConfig.CUSTOM_FUNC_SIMPSEL.isFlag()){
+    		initializeAndExecuteGenerator(new SimpleSelElementGenerator(), xmlElement);
+    	}
     	
         return xmlElement;
     }

@@ -6,6 +6,11 @@
 	<version>1.3.0-SNAPSHOT</version>
 
 	<dependencies>
+		<dependency>
+			<groupId>wang.ulane</groupId>
+			<artifactId>fortest</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 		<!-- 日志依赖 -->
 		<dependency>
 			<groupId>org.slf4j</groupId>

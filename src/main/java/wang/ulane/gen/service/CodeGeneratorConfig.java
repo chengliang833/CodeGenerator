@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import wang.ulane.gen.main.FuncSimpSel;
 import wang.ulane.gen.main.TableDef;
 
 public class CodeGeneratorConfig {
@@ -47,6 +48,7 @@ public class CodeGeneratorConfig {
 	// 是否生成自定义方法
 	public static Map<String, Boolean> CUSTOM_FUNC;
 	public static boolean CUSTOM_FUNC_GEN = false;
+	public static FuncSimpSel CUSTOM_FUNC_SIMPSEL = new FuncSimpSel();
 	
 	//简化primarykey方法名
 	public static boolean SIMPL_FUNC_NAME = false;

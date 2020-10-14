@@ -47,6 +47,9 @@ public class CustomizeJavaMapperGenerator extends JavaMapperGenerator {
             	if(CodeGeneratorConfig.CUSTOM_FUNC.getOrDefault("selectByCondition", false)){
             		initializeAndExecuteGenerator(new SelectByConditionMethodGenerator(), (Interface)unit);
             	}
+            	if(CodeGeneratorConfig.CUSTOM_FUNC_SIMPSEL.isFlag()){
+            		initializeAndExecuteGenerator(new SimpleSelMethodGenerator(), (Interface)unit);
+            	}
             }
         }
         return answer;

@@ -277,8 +277,8 @@ public class DatabaseIntrospector {
 
                 if (isTrue(tc.getProperty(PropertyRegistry.TABLE_USE_ACTUAL_COLUMN_NAMES))
                 		 && (CodeGeneratorConfig.USE_ACTUAL_COLUMN_NAMES_REGEX == null || 
-                				 CodeGeneratorConfig.USE_ACTUAL_COLUMN_NAMES_REGEX != null 
-                				 && calculatedColumnName.matches(CodeGeneratorConfig.USE_ACTUAL_COLUMN_NAMES_REGEX) )) {
+                				 (CodeGeneratorConfig.USE_ACTUAL_COLUMN_NAMES_REGEX != null 
+                				 && calculatedColumnName.matches(CodeGeneratorConfig.USE_ACTUAL_COLUMN_NAMES_REGEX)) )) {
                     introspectedColumn.setJavaProperty(
                             getValidPropertyName(calculatedColumnName));
                 } else if (isTrue(tc

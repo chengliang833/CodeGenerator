@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -24,6 +25,7 @@ import org.slf4j.LoggerFactory;
 
 import com.alibaba.druid.util.StringUtils;
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 
 import freemarker.cache.ClassTemplateLoader;
 import freemarker.template.Configuration;
@@ -221,8 +223,22 @@ public class CodeGeneratorManager extends CodeGeneratorConfig {
         
         SIMPL_FUNC_NAME = Boolean.valueOf(prop.getProperty("custom.simplifyName", "false"));
         
-        USE_ACTUAL_COLUMN_NAMES = Boolean.valueOf(prop.getProperty("custom.useActualColumnNames", "false"));
-        USE_ACTUAL_COLUMN_NAMES_REGEX = prop.getProperty("custom.useActualColumnNamesRegex");
+        String USE_ACTUAL_COLUMN_NAMES_STR = prop.getProperty("custom.useActualColumnNames", "false");
+        if(USE_ACTUAL_COLUMN_NAMES_STR.contains(",")){
+        	int comIdx = USE_ACTUAL_COLUMN_NAMES_STR.indexOf(",");
+        	USE_ACTUAL_COLUMN_NAMES = Boolean.valueOf(USE_ACTUAL_COLUMN_NAMES_STR.substring(0,comIdx));
+        	USE_ACTUAL_COLUMN_NAMES_REGEX = USE_ACTUAL_COLUMN_NAMES_STR.substring(comIdx+1);
+        }else{
+        	USE_ACTUAL_COLUMN_NAMES = Boolean.valueOf(USE_ACTUAL_COLUMN_NAMES_STR);
+        	USE_ACTUAL_COLUMN_NAMES_REGEX = prop.getProperty("custom.useActualColumnNamesRegex");
+        }
+        
+        JSONObject funcSimpSelObj = JSON.parseObject(prop.getProperty("custom.funcSimpSel","{}"));
+        if(funcSimpSelObj.getBoolean("flag") != null && funcSimpSelObj.getBooleanValue("flag")){
+        	CUSTOM_FUNC_SIMPSEL.setFlag(true);
+        	CUSTOM_FUNC_SIMPSEL.setSelectFields(Arrays.asList(funcSimpSelObj.getString("select").split(",")));
+        	CUSTOM_FUNC_SIMPSEL.setWhereFields(Arrays.asList(funcSimpSelObj.getString("where").split(",")));
+        }
         
         MODEL_SWAGGER_ANNOTATION = Boolean.valueOf(prop.getProperty("custom.modelSwaggerAnnotation", "false"));
         
