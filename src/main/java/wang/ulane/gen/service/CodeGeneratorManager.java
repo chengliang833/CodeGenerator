@@ -8,6 +8,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -233,11 +235,27 @@ public class CodeGeneratorManager extends CodeGeneratorConfig {
         	USE_ACTUAL_COLUMN_NAMES_REGEX = prop.getProperty("custom.useActualColumnNamesRegex");
         }
         
-        JSONObject funcSimpSelObj = JSON.parseObject(prop.getProperty("custom.funcSimpSel","{}"));
-        if(funcSimpSelObj.getBoolean("flag") != null && funcSimpSelObj.getBooleanValue("flag")){
+        JSONObject funcSimpSel = JSON.parseObject(prop.getProperty("custom.funcSimpSel","{}"));
+        if(funcSimpSel.getBoolean("flag") != null && funcSimpSel.getBooleanValue("flag")){
         	CUSTOM_FUNC_SIMPSEL.setFlag(true);
-        	CUSTOM_FUNC_SIMPSEL.setSelectFields(Arrays.asList(funcSimpSelObj.getString("select").split(",")));
-        	CUSTOM_FUNC_SIMPSEL.setWhereFields(Arrays.asList(funcSimpSelObj.getString("where").split(",")));
+        	CUSTOM_FUNC_SIMPSEL.setSelectFields(Arrays.asList(funcSimpSel.getString("select").split(",")));
+        	CUSTOM_FUNC_SIMPSEL.setWhereFields(Arrays.asList(funcSimpSel.getString("where").split(",")));
+        }
+        
+        JSONObject funcSelwithdeatil = JSON.parseObject(prop.getProperty("custom.funcSelWithDeatil","{}"));
+        if(funcSelwithdeatil.getBoolean("flag") != null && funcSelwithdeatil.getBooleanValue("flag")){
+        	CUSTOM_FUNC_SELWITHDEATIL.setFlag(true);
+        	funcSelwithdeatil.remove("flag");
+        	CUSTOM_FUNC_SELWITHDEATIL.setMainModels(funcSelwithdeatil.keySet());
+//        	CUSTOM_FUNC_SELWITHDEATIL.setModelRelate(JSON.toJavaObject(funcSelwithdeatil, Map.class));
+        	Map<String,List<String>> map = new HashMap<>();
+        	for(String key:CUSTOM_FUNC_SELWITHDEATIL.getMainModels()){
+        		map.put(key, Arrays.asList(funcSelwithdeatil.getString(key).split(",")));
+        	}
+        	CUSTOM_FUNC_SELWITHDEATIL.setModelRelate(map);
+        }else{
+        	CUSTOM_FUNC_SELWITHDEATIL.setMainModels(new HashSet<>());
+        	CUSTOM_FUNC_SELWITHDEATIL.setModelRelate(new HashMap<>());
         }
         
         MODEL_SWAGGER_ANNOTATION = Boolean.valueOf(prop.getProperty("custom.modelSwaggerAnnotation", "false"));

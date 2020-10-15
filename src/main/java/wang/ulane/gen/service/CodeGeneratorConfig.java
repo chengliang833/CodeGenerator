@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import wang.ulane.gen.main.FuncSelWithDeatil;
 import wang.ulane.gen.main.FuncSimpSel;
 import wang.ulane.gen.main.TableDef;
 
@@ -49,6 +50,7 @@ public class CodeGeneratorConfig {
 	public static Map<String, Boolean> CUSTOM_FUNC;
 	public static boolean CUSTOM_FUNC_GEN = false;
 	public static FuncSimpSel CUSTOM_FUNC_SIMPSEL = new FuncSimpSel();
+	public static FuncSelWithDeatil CUSTOM_FUNC_SELWITHDEATIL = new FuncSelWithDeatil();
 	
 	//简化primarykey方法名
 	public static boolean SIMPL_FUNC_NAME = false;

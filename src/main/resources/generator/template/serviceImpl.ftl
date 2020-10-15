@@ -3,7 +3,7 @@ package ${serviceimplPackage};
 import ${modelPackage}.${modelNameUpperCamel};
 import ${mapperPackage}.${modelNameUpperCamel}${sufName};
 import ${servicePackage}.${modelNameUpperCamel}Service;
-
+${detailImportService}
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -16,7 +16,7 @@ public class ${modelNameUpperCamel}ServiceImpl implements ${modelNameUpperCamel}
 
 	@Autowired
     private ${modelNameUpperCamel}${sufName} ${modelNameLowerCamel}${sufName};
-    
+    ${detailAutowired}
 	<#list serviceImplMethodsList as serviceMethod>
 ${serviceMethod!''}
 	</#list>
