@@ -1,6 +1,7 @@
 package wang.ulane.gen.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -10,7 +11,7 @@ import wang.ulane.gen.main.TableDef;
 
 public class CodeGeneratorConfig {
 	// JDBC 相关配置信息
-	protected static String JDBC_URL;
+	public static String JDBC_URL;
 	protected static String JDBC_USERNAME;
 	protected static String JDBC_PASSWORD;
 	protected static String JDBC_DRIVER_CLASS_NAME;
@@ -65,6 +66,18 @@ public class CodeGeneratorConfig {
 	public static boolean USE_ACTUAL_COLUMN_NAMES = false;
 	public static String USE_ACTUAL_COLUMN_NAMES_REGEX;
 	
+	//生成实际的字段名保留正则指定部分
+	public static boolean RETAIN_PART_COLUMN_NAMES = false;
+	public static List<Map<String,String>> RETAIN_PART_COLUMN_NAMES_LIST = new ArrayList<>();
+//	public static String RETAIN_PART_COLUMN_NAMES_REGEX_FROM;
+//	public static String RETAIN_PART_COLUMN_NAMES_REGEX_TO;
+	
+	//生成实际的字段名保留指定类型
+	public static boolean RETAIN_COLUMN_TYPE = false;
+	public static List<Map<String,String>> RETAIN_COLUMN_TYPE_LIST = new ArrayList<>();
+//	public static String RETAIN_COLUMN_TYPE_FROM;
+//	public static String RETAIN_COLUMN_TYPE_TO;
+	
 	//生成默认的增删改查方法
 	public static Map<String, Boolean> GEN_DEFAULT;
 	
@@ -74,4 +87,5 @@ public class CodeGeneratorConfig {
 	protected static String DATE;
 	
 	public static List<TableDef> TABLES = new ArrayList<TableDef>();
+	public static Map<String,TableDef> TABLESMAP = new HashMap<>();
 }

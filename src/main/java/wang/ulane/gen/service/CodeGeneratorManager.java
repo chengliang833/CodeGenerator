@@ -99,6 +99,11 @@ public class CodeGeneratorManager extends CodeGeneratorConfig {
         jdbcConnectionConfiguration.setUserId(JDBC_USERNAME);
         jdbcConnectionConfiguration.setPassword(JDBC_PASSWORD);
         jdbcConnectionConfiguration.setDriverClass(JDBC_DRIVER_CLASS_NAME);
+        //mysql列注释
+		jdbcConnectionConfiguration.addProperty("useInformationSchema", "true");
+		//oracle列注释
+        jdbcConnectionConfiguration.addProperty("remarksReporting", "true");
+//        jdbcConnectionConfiguration.addProperty("reportRemarks", "true");
         context.setJdbcConnectionConfiguration(jdbcConnectionConfiguration);
 
         SqlMapGeneratorConfiguration sqlMapGeneratorConfiguration = new SqlMapGeneratorConfiguration();
@@ -231,8 +236,39 @@ public class CodeGeneratorManager extends CodeGeneratorConfig {
         	USE_ACTUAL_COLUMN_NAMES = Boolean.valueOf(USE_ACTUAL_COLUMN_NAMES_STR.substring(0,comIdx));
         	USE_ACTUAL_COLUMN_NAMES_REGEX = USE_ACTUAL_COLUMN_NAMES_STR.substring(comIdx+1);
         }else{
+        	//兼容前一个版本
         	USE_ACTUAL_COLUMN_NAMES = Boolean.valueOf(USE_ACTUAL_COLUMN_NAMES_STR);
         	USE_ACTUAL_COLUMN_NAMES_REGEX = prop.getProperty("custom.useActualColumnNamesRegex");
+        }
+        
+        String RETAIN_PART_COLUMN_NAMES_STR = prop.getProperty("custom.retainPartColumnNames", "false");
+        if(RETAIN_PART_COLUMN_NAMES_STR.contains(",")){
+        	String[] strs = RETAIN_PART_COLUMN_NAMES_STR.split(",");
+        	RETAIN_PART_COLUMN_NAMES = Boolean.valueOf(strs[0]);
+        	if(RETAIN_PART_COLUMN_NAMES){
+        		RETAIN_PART_COLUMN_NAMES_LIST = analysisForRetainColumn(1, strs);
+//        		for(int i=1;i<strs.length;){
+//        			Map<String,String> map = new HashMap<>();
+//        			map.put("from", strs[i++].replace("[", ""));
+//        			map.put("to", strs[i++].replace("]", ""));
+//        			RETAIN_PART_COLUMN_NAMES_LIST.add(map);
+//        		}
+        	}
+        }
+        
+        String RETAIN_COLUMN_TYPE_STR = prop.getProperty("custom.retainColumnType", "false");
+        if(RETAIN_COLUMN_TYPE_STR.contains(",")){
+        	String[] strs = RETAIN_COLUMN_TYPE_STR.split(",");
+        	RETAIN_COLUMN_TYPE = Boolean.valueOf(strs[0]);
+        	if(RETAIN_COLUMN_TYPE){
+        		RETAIN_COLUMN_TYPE_LIST = analysisForRetainColumn(1, strs);
+//        		for(int i=1;i<strs.length;){
+//        			Map<String,String> map = new HashMap<>();
+//        			map.put("from", strs[i++].replace("[", ""));
+//        			map.put("to", strs[i++].replace("]", ""));
+//        			RETAIN_COLUMN_TYPE_LIST.add(map);
+//        		}
+        	}
         }
         
         JSONObject funcSimpSel = JSON.parseObject(prop.getProperty("custom.funcSimpSel","{}"));
@@ -279,15 +315,29 @@ public class CodeGeneratorManager extends CodeGeneratorConfig {
         DATE = new SimpleDateFormat(dateFormat).format(new Date());
         
         Set<Object> propSet = prop.keySet();
+        Map<String, String[]> mapTemp = new HashMap<>();
+        for(Object p:propSet){
+        	String key = p.toString();
+        	String[] values = prop.getProperty(p.toString()).split(",");
+        	if(key.startsWith("tablecolname_")){
+        		mapTemp.put(key.substring(13), values);
+        	}
+        }
         for(Object p:propSet){
         	String key = p.toString();
         	String[] values = prop.getProperty(p.toString()).split(",");
         	if(key.startsWith("table_")){
-        		TABLES.add(new TableDef(key.substring(6), 
-        								values[0], 
-										values.length>1?values[1]:null, 
-										values.length>2?("null".equals(values[2])?null:values[2]):null, 
-										values.length>3?values[3]:null));
+        		TableDef td = new TableDef(key.substring(6), 
+											values[0], 
+											values.length>1?values[1]:null, 
+											values.length>2?("null".equals(values[2])?null:values[2]):null, 
+											values.length>3?values[3]:null);
+        		if(mapTemp.containsKey(key.substring(6))){
+        			td.setRetainPartColumnNamesList(analysisForRetainColumn(0, mapTemp.get(key.substring(6))));
+        		}
+        		TABLES.add(td);
+        		TABLESMAP.put(key.substring(6), td);
+        		
         	}
         }
         
@@ -320,6 +370,17 @@ public class CodeGeneratorManager extends CodeGeneratorConfig {
             throw new RuntimeException("加载配置文件异常!", e);
         }
         return prop;
+    }
+    
+    private static List<Map<String,String>> analysisForRetainColumn(int iStart, String[] strs){
+    	List<Map<String,String>> list = new ArrayList<>();
+		for(int i=iStart;i<strs.length;){
+			Map<String,String> map = new HashMap<>();
+			map.put("from", strs[i++].replace("[", ""));
+			map.put("to", strs[i++].replace("]", ""));
+			list.add(map);
+		}
+		return list;
     }
 
 }

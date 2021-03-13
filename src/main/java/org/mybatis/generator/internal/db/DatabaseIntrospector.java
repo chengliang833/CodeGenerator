@@ -264,6 +264,7 @@ public class DatabaseIntrospector {
 
         for (Map.Entry<ActualTableName, List<IntrospectedColumn>> entry : columns
                 .entrySet()) {
+            List<Map<String,String>> retainPartColumnNames = CodeGeneratorConfig.TABLESMAP.get(entry.getKey().getTableName()).getRetainPartColumnNamesList();
             for (IntrospectedColumn introspectedColumn : entry.getValue()) {
                 String calculatedColumnName;
                 if (pattern == null) {
@@ -294,11 +295,45 @@ public class DatabaseIntrospector {
                     introspectedColumn.setJavaProperty(
                             getCamelCaseString(calculatedColumnName, false));
                 }
-
+                //判断是否需要保留部分列名
+                if(CodeGeneratorConfig.RETAIN_PART_COLUMN_NAMES){
+                	for(Map<String,String> map:CodeGeneratorConfig.RETAIN_PART_COLUMN_NAMES_LIST){
+                		if(introspectedColumn.getJavaProperty().matches(map.get("from"))){
+                			String newName = introspectedColumn.getJavaProperty().replaceAll(
+                					map.get("from"), 
+                					map.get("to"));
+                			introspectedColumn.setJavaProperty(newName);
+                			break;
+                		}
+                	}
+                }
+                
+                //按表保留列名
+                if(retainPartColumnNames != null){
+                	for(Map<String,String> map:retainPartColumnNames){
+                		if(introspectedColumn.getJavaProperty().matches(map.get("from"))){
+                			String newName = introspectedColumn.getJavaProperty().replaceAll(
+                					map.get("from"), 
+                					map.get("to"));
+                			introspectedColumn.setJavaProperty(newName);
+                			break;
+                		}
+                	}
+                }
+                
                 FullyQualifiedJavaType fullyQualifiedJavaType = javaTypeResolver
                         .calculateJavaType(introspectedColumn);
 
                 if (fullyQualifiedJavaType != null) {
+                	//指定一些列的javatype
+                	if(CodeGeneratorConfig.RETAIN_COLUMN_TYPE){
+                    	for(Map<String,String> map:CodeGeneratorConfig.RETAIN_COLUMN_TYPE_LIST){
+                    		if(fullyQualifiedJavaType.getFullyQualifiedName().equals(map.get("from"))){
+                    			fullyQualifiedJavaType = new FullyQualifiedJavaType(map.get("to"));
+                    			break;
+                    		}
+                    	}
+                	}
                     introspectedColumn
                             .setFullyQualifiedJavaType(fullyQualifiedJavaType);
                     introspectedColumn.setJdbcTypeName(javaTypeResolver

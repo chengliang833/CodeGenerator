@@ -1,11 +1,15 @@
 package wang.ulane.gen.main;
 
+import java.util.List;
+import java.util.Map;
+
 public class TableDef {
 	private String tableName;
 	private String modelName;
 	private String mapperSufName = "Mapper";
 	private String genKey;
 	private String rootClass;
+	private List<Map<String,String>> retainPartColumnNamesList;
 	
 	public TableDef(String tableName, String modelName, String mapperSufName, String genKey, String rootClass) {
 		this.tableName = tableName;
@@ -46,6 +50,13 @@ public class TableDef {
 	}
 	public void setRootClass(String rootClass) {
 		this.rootClass = rootClass;
+	}
+
+	public List<Map<String, String>> getRetainPartColumnNamesList() {
+		return retainPartColumnNamesList;
+	}
+	public void setRetainPartColumnNamesList(List<Map<String, String>> retainPartColumnNamesList) {
+		this.retainPartColumnNamesList = retainPartColumnNamesList;
 	}
 	
 	
